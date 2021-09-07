@@ -1,11 +1,3 @@
-//
-//  RootViewController.m
-//  MacOSHid
-//
-//  Created by Smile on 2019/3/18.
-//  Copyright © 2019 mac. All rights reserved.
-//
-
 #import "RootViewController.h"
 #include <IOKit/hid/IOHIDLib.h>
 #include <IOKit/hid/IOHIDKeys.h>

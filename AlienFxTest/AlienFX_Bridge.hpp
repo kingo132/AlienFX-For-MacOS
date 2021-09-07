@@ -1,11 +1,3 @@
-//
-//  AlienFX_Bridge.hpp
-//  MacOSHid
-//
-//  Created by jason on 2021/9/6.
-//  Copyright © 2021 mac. All rights reserved.
-//
-
 #ifndef AlienFX_Bridge_hpp
 #define AlienFX_Bridge_hpp
 

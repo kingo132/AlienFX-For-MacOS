@@ -25,7 +25,7 @@
 		7692C593223F860400F9A6EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		7692C595223F860400F9A6EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7692C596223F860400F9A6EE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		7692C598223F860400F9A6EE /* MacOSHid.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacOSHid.entitlements; sourceTree = "<group>"; };
+		7692C598223F860400F9A6EE /* AlienFxTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AlienFxTest.entitlements; sourceTree = "<group>"; };
 		7692C5AA223F8A2500F9A6EE /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		7692C5AB223F8A2500F9A6EE /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		7692C5AC223F8A2500F9A6EE /* RootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
@@ -76,7 +76,7 @@
 				7692C592223F860400F9A6EE /* MainMenu.xib */,
 				7692C595223F860400F9A6EE /* Info.plist */,
 				7692C596223F860400F9A6EE /* main.m */,
-				7692C598223F860400F9A6EE /* MacOSHid.entitlements */,
+				7692C598223F860400F9A6EE /* AlienFxTest.entitlements */,
 			);
 			path = AlienFxTest;
 			sourceTree = "<group>";
@@ -107,7 +107,7 @@
 			dependencies = (
 			);
 			name = AlienFxTest;
-			productName = MacOSHid;
+			productName = AlienFxTest;
 			productReference = 7692C58A223F860400F9A6EE /* AlienFxTest.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -300,7 +300,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = N99J53F9R6;
-				INFOPLIST_FILE = MacOSHid/Info.plist;
+				INFOPLIST_FILE = AlienFxTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = demo.alienfxtest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -316,7 +316,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = N99J53F9R6;
-				INFOPLIST_FILE = MacOSHid/Info.plist;
+				INFOPLIST_FILE = AlienFxTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = demo.alienfxtest;
 				PRODUCT_NAME = "$(TARGET_NAME)";

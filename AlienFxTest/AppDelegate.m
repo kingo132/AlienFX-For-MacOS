@@ -1,11 +1,3 @@
-//
-//  AppDelegate.m
-//  MacOSHid
-//
-//  Created by Smile on 2019/3/18.
-//  Copyright © 2019年 mac. All rights reserved.
-//
-
 #import "AppDelegate.h"
 #import "RootViewController.h"
 
