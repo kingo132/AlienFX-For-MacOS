@@ -1,5 +1,5 @@
 # AlienFX-For-MacOS
-Control your log&amp;keyboard light of Alienware FX in Mac OS
+Control your logo&amp;keyboard light of Alienware FX in Mac OS
 
 Note:
 
