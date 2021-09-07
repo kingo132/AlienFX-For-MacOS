@@ -11,4 +11,4 @@ If you want to use it in other model, try to use the raw AlienFX_SDK.h & AlienFX
 
 This code is port from: https://github.com/T-Troll/alienfx-tools, and thanks to @T-Troll for having done such a great job.
 
-Haven't done much test and just tesed the brightness, if you want more functionality, just fork it and mofify.
+Haven't done much test and just tesed the brightness, if you want more functionality, just fork and modify.
