@@ -1,6 +1,10 @@
 # AlienFX-For-MacOS
 Control your logo&amp;keyboard light of Alienware FX in Mac OS
 
+Screenshot:
+
+![image](https://user-images.githubusercontent.com/46492291/132944880-d362f076-a154-48c2-8261-39927b564bbc.png)
+
 Note:
 
 This project contains AlienFX_SDK.h & AlienFX_SDK.cpp which can be used to control AlienFX under Mac OS.
