@@ -3,7 +3,7 @@ Control your logo&amp;keyboard light of Alienware FX in Mac OS
 
 Screenshot:
 
-![image](https://user-images.githubusercontent.com/46492291/132944880-d362f076-a154-48c2-8261-39927b564bbc.png)
+<img width="212" alt="QQ20210925-231546@2x" src="https://user-images.githubusercontent.com/46492291/134776461-233dca24-75b6-480a-880a-69981de9bdf9.png">
 
 Note:
 
