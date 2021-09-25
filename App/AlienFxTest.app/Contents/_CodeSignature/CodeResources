@@ -4,29 +4,51 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Resources/Base.lproj/MainMenu.nib</key>
+		<key>Resources/AppIcon.icns</key>
 		<data>
-		6jCGV2lFuxJ2IqTJCiyI/y8/+RM=
+		ds6mjlgOWEsAccFu24HBTa9ICIc=
 		</data>
-		<key>Resources/RootViewController.nib</key>
+		<key>Resources/Assets.car</key>
 		<data>
-		cC3aRuk1rTmg1Zt/nlsUQ10U1HA=
+		GAHa/0KdXAf4Lom/DCbWl5ZqRuA=
+		</data>
+		<key>Resources/Base.lproj/MainMenu.nib/keyedobjects-101300.nib</key>
+		<data>
+		G5UznIwF9SknNj+XDlGzg3ivx8o=
+		</data>
+		<key>Resources/Base.lproj/MainMenu.nib/keyedobjects.nib</key>
+		<data>
+		b3P7e6vWfdzYwSdk0HcxF815kHs=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Resources/Base.lproj/MainMenu.nib</key>
+		<key>Resources/AppIcon.icns</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			TawA4dTInlg2ht78iluozyT6G/TEjM4PNITlL01re7c=
+			aMbXXs+IWhzND1jckhjdeuH2k1dWUYiqvpKyqSQbFaY=
 			</data>
 		</dict>
-		<key>Resources/RootViewController.nib</key>
+		<key>Resources/Assets.car</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			cu+XFGKBrEL45rBR9OJNuU81Y2bJKMNrfj+42CHcMtA=
+			dDmZrTkzILOeTjWjAfbsnkYPe4JbUTRYHr4aGgMbJnM=
+			</data>
+		</dict>
+		<key>Resources/Base.lproj/MainMenu.nib/keyedobjects-101300.nib</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			A8Ofsc45cWCi32RGR8f4X3oTeMmev0Y6VRXuyS5L0FI=
+			</data>
+		</dict>
+		<key>Resources/Base.lproj/MainMenu.nib/keyedobjects.nib</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			IahN5URl2XDcOUaaitOjq1TVUj5XfIXH0z+68beaqNY=
 			</data>
 		</dict>
 	</dict>

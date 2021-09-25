@@ -9,11 +9,10 @@
 /* Begin PBXBuildFile section */
 		7692C58F223F860400F9A6EE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7692C58E223F860400F9A6EE /* AppDelegate.m */; };
 		7692C591223F860400F9A6EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7692C590223F860400F9A6EE /* Assets.xcassets */; };
-		7692C594223F860400F9A6EE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7692C592223F860400F9A6EE /* MainMenu.xib */; };
 		7692C597223F860400F9A6EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7692C596223F860400F9A6EE /* main.m */; };
-		7692C5AD223F8A2500F9A6EE /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7692C5AB223F8A2500F9A6EE /* RootViewController.m */; };
-		7692C5AE223F8A2500F9A6EE /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7692C5AC223F8A2500F9A6EE /* RootViewController.xib */; };
+		9600ED6926FC9D9200F6DD14 /* ScreenStateObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 9600ED6826FC9D9200F6DD14 /* ScreenStateObserver.m */; };
 		969CF6A826D8D0DB0077A3D5 /* AlienFX_SDK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 969CF6A626D8D0DB0077A3D5 /* AlienFX_SDK.cpp */; };
+		96C952A426FF6F5800009B16 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96C952A226FF6F5800009B16 /* MainMenu.xib */; };
 		96F7A9FF26E665F500FE1168 /* AlienFX_Bridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96F7A9FD26E665F500FE1168 /* AlienFX_Bridge.mm */; };
 /* End PBXBuildFile section */
 
@@ -22,15 +21,14 @@
 		7692C58D223F860400F9A6EE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7692C58E223F860400F9A6EE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7692C590223F860400F9A6EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		7692C593223F860400F9A6EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		7692C595223F860400F9A6EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7692C596223F860400F9A6EE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7692C598223F860400F9A6EE /* AlienFxTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AlienFxTest.entitlements; sourceTree = "<group>"; };
-		7692C5AA223F8A2500F9A6EE /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
-		7692C5AB223F8A2500F9A6EE /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		7692C5AC223F8A2500F9A6EE /* RootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
+		9600ED6726FC9D9200F6DD14 /* ScreenStateObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenStateObserver.h; sourceTree = "<group>"; };
+		9600ED6826FC9D9200F6DD14 /* ScreenStateObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenStateObserver.m; sourceTree = "<group>"; };
 		969CF6A626D8D0DB0077A3D5 /* AlienFX_SDK.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AlienFX_SDK.cpp; sourceTree = "<group>"; };
 		969CF6A726D8D0DB0077A3D5 /* AlienFX_SDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlienFX_SDK.h; sourceTree = "<group>"; };
+		96C952A326FF6F5800009B16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		96F7A9FD26E665F500FE1168 /* AlienFX_Bridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AlienFX_Bridge.mm; sourceTree = "<group>"; };
 		96F7A9FE26E665F500FE1168 /* AlienFX_Bridge.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AlienFX_Bridge.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -65,30 +63,21 @@
 		7692C58C223F860400F9A6EE /* AlienFxTest */ = {
 			isa = PBXGroup;
 			children = (
+				9600ED6726FC9D9200F6DD14 /* ScreenStateObserver.h */,
+				9600ED6826FC9D9200F6DD14 /* ScreenStateObserver.m */,
 				969CF6A626D8D0DB0077A3D5 /* AlienFX_SDK.cpp */,
 				969CF6A726D8D0DB0077A3D5 /* AlienFX_SDK.h */,
 				96F7A9FD26E665F500FE1168 /* AlienFX_Bridge.mm */,
 				96F7A9FE26E665F500FE1168 /* AlienFX_Bridge.hpp */,
-				7692C59E223F861600F9A6EE /* VC */,
 				7692C58D223F860400F9A6EE /* AppDelegate.h */,
 				7692C58E223F860400F9A6EE /* AppDelegate.m */,
 				7692C590223F860400F9A6EE /* Assets.xcassets */,
-				7692C592223F860400F9A6EE /* MainMenu.xib */,
+				96C952A226FF6F5800009B16 /* MainMenu.xib */,
 				7692C595223F860400F9A6EE /* Info.plist */,
 				7692C596223F860400F9A6EE /* main.m */,
 				7692C598223F860400F9A6EE /* AlienFxTest.entitlements */,
 			);
 			path = AlienFxTest;
-			sourceTree = "<group>";
-		};
-		7692C59E223F861600F9A6EE /* VC */ = {
-			isa = PBXGroup;
-			children = (
-				7692C5AA223F8A2500F9A6EE /* RootViewController.h */,
-				7692C5AB223F8A2500F9A6EE /* RootViewController.m */,
-				7692C5AC223F8A2500F9A6EE /* RootViewController.xib */,
-			);
-			path = VC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,8 +144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7692C591223F860400F9A6EE /* Assets.xcassets in Resources */,
-				7692C594223F860400F9A6EE /* MainMenu.xib in Resources */,
-				7692C5AE223F8A2500F9A6EE /* RootViewController.xib in Resources */,
+				96C952A426FF6F5800009B16 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,17 +159,17 @@
 				969CF6A826D8D0DB0077A3D5 /* AlienFX_SDK.cpp in Sources */,
 				7692C597223F860400F9A6EE /* main.m in Sources */,
 				7692C58F223F860400F9A6EE /* AppDelegate.m in Sources */,
-				7692C5AD223F8A2500F9A6EE /* RootViewController.m in Sources */,
+				9600ED6926FC9D9200F6DD14 /* ScreenStateObserver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		7692C592223F860400F9A6EE /* MainMenu.xib */ = {
+		96C952A226FF6F5800009B16 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				7692C593223F860400F9A6EE /* Base */,
+				96C952A326FF6F5800009B16 /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";

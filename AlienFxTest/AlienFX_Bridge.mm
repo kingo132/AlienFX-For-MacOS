@@ -4,6 +4,7 @@
 @implementation AlienFX_Bridge
 
 static AlienFX_Bridge *_sharedManager = nil;
+int _lastKeyboardBrightnessSave = 50;
 
 +(AlienFX_Bridge *)sharedManager {
     if(!_sharedManager)
@@ -30,12 +31,25 @@ AlienFX_SDK::Functions otherFn;
 
 - (bool)ToggleKeyboardBrightness:(uint8)brightness
 {
+    _lastKeyboardBrightnessSave = brightness;
     return keyboardFn.ToggleState(brightness);
 }
 
 - (bool)ToggleOtherBrightness:(uint8)brightness
 {
     return otherFn.ToggleState(brightness);
+}
+
+- (bool)TurnOffOnScreenOff
+{
+    keyboardFn.ToggleState(0);
+    return true;
+}
+
+- (bool)RestoreOnScreenOn
+{
+    keyboardFn.ToggleState(_lastKeyboardBrightnessSave);
+    return true;
 }
 
 @end

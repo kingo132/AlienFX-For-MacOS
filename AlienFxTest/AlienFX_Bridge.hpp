@@ -17,6 +17,10 @@
 
 - (bool)ToggleOtherBrightness:(uint8)brightness;
 
+- (bool)TurnOffOnScreenOff;
+
+- (bool)RestoreOnScreenOn;
+
 @end
 
 #endif /* AlienFX_Bridge_hpp */
