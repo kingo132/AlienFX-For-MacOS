@@ -174,6 +174,7 @@ namespace AlienFX_SDK
 		// Initialize device
 		// Returns PID of device used. if pid argument is -1, first device found into the system will be used.
 		int AlienFXInitialize(int vID, int pID, int rpLen);
+        //int AlienFXReinitialize();
         
         static void HandleDeviceMatchingCallback(void * context, IOReturn result, void * sender, IOHIDDeviceRef sdevice);
         static void HandleDeviceRemovalCallback(void * context, IOReturn result, void * sender, IOHIDDeviceRef sdevice);

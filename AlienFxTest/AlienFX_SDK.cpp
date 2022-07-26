@@ -156,6 +156,38 @@ namespace AlienFX_SDK
         return 0;
 	}
 
+/*
+    int Functions::AlienFXReinitialize()
+    {
+        managerRef = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
+        IOHIDManagerScheduleWithRunLoop(managerRef, CFRunLoopGetMain(), kCFRunLoopDefaultMode);
+        IOReturn ret = IOHIDManagerOpen(managerRef, 0L);
+        if (ret != kIOReturnSuccess) {
+            //NSLog(@"打开设备失败!");
+            return -1;
+        } else {
+            //NSLog(@"打开设备成功!");
+        }
+        
+        CFSetRef allDevices = IOHIDManagerCopyDevices(managerRef);
+        CFIndex size = CFSetGetCount(allDevices);
+        if (size > 0) {
+            IOHIDDeviceRef array[size]; // array of IOHIDDeviceRef
+            CFSetGetValues(allDevices, (const void **)array);
+            // 拿第一个
+            devHandle = array[0];
+        } else {
+            return -2;
+        }
+        
+        if (afxMap == nil) {
+            afxMap = new Mappings();
+        }
+        
+        return 0;
+    }
+ */
+
     void Functions::HidInputCallback(void * context, IOReturn result, void * sender, IOHIDReportType type, uint32_t reportID, uint8_t * report, CFIndex reportLength) {
         
     }
@@ -924,10 +956,14 @@ namespace AlienFX_SDK
 			//	Reset();
 			//}
 			memcpy(buffer, COMMV5.turnOnInit, sizeof(COMMV5.turnOnInit));
-			HidDSetFeature(buffer, length);
+            if (! HidDSetFeature(buffer, length)) {
+                return false;
+            }
 			ZeroMemory(buffer, length);
 			memcpy(buffer, COMMV5.turnOnInit2, sizeof(COMMV5.turnOnInit2));
-			HidDSetFeature(buffer, length);
+            if (! HidDSetFeature(buffer, length)) {
+                return false;
+            }
 			ZeroMemory(buffer, length);
 			memcpy(buffer, COMMV5.turnOnSet, sizeof(COMMV5.turnOnSet));
 			buffer[4] = brightness; // 00..ff
@@ -937,7 +973,9 @@ namespace AlienFX_SDK
 		{
 			//if (inSet) UpdateColors();
 			memcpy(buffer, COMMV4.prepareTurn, sizeof(COMMV4.prepareTurn));
-			HidDSetOutputReport(buffer, length);
+            if (! HidDSetOutputReport(buffer, length)) {
+                return false;
+            }
 			ZeroMemory(buffer, length);
 			memcpy(buffer, COMMV4.turnOn, sizeof(COMMV4.turnOn));
 			buffer[3] = 0x64 - (((UINT)brightness) * 0x64 / 0xff); // 00..64
@@ -1138,12 +1176,12 @@ namespace AlienFX_SDK
 		}
         
         if (managerRef) {
-            IOReturn ret = IOHIDManagerClose(managerRef, 0L);
-            if (ret == kIOReturnSuccess) {
+            //IOReturn ret = IOHIDManagerClose(managerRef, 0L);
+            //if (ret == kIOReturnSuccess) {
                 managerRef = nil;
-            } else {
-                result = false;
-            }
+            //} else {
+            //    result = false;
+            //}
         }
         
         if (afxMap) {

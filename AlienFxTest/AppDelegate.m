@@ -95,4 +95,18 @@
     
 }
 
+- (void)computerSleep {
+    int ret = [[AlienFX_Bridge sharedManager] uninitAlienFx];
+    if (!ret) {
+        NSLog(@"AlienFx uninitialize failed: %d, check the permission of Accesibility!", ret);
+    }
+}
+
+- (void)computerWake {
+    int ret = [[AlienFX_Bridge sharedManager] initAlienFx];
+    if (!ret) {
+        NSLog(@"AlienFx reinitialize failed: %d, check the permission of Accesibility!", ret);
+    }
+}
+
 @end

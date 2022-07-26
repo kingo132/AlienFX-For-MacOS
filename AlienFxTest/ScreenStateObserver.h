@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)screenDidWake;
 - (void)screenDidSleep;
+- (void)computerSleep;
+- (void)computerWake;
 
 @end
 

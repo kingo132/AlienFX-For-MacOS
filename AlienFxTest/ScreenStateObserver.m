@@ -18,8 +18,11 @@
         [[NSWorkspace sharedWorkspace].notificationCenter addObserver:self selector:@selector(screensDidWake:) name:NSWorkspaceScreensDidWakeNotification object:nil];
 
         [[NSWorkspace sharedWorkspace].notificationCenter addObserver:self selector:@selector(screensDidSleep:) name:NSWorkspaceScreensDidSleepNotification object:nil];
-
         
+        [[NSWorkspace sharedWorkspace].notificationCenter addObserver:self selector:@selector(computerSleep:) name:NSWorkspaceWillSleepNotification object:nil];
+        
+        [[NSWorkspace sharedWorkspace].notificationCenter addObserver:self selector:@selector(computerWake:) name:NSWorkspaceDidWakeNotification object:nil];
+
     }
     return self;
 }
@@ -27,12 +30,22 @@
 - (void)screensDidWake:(NSNotification *)note {
     
     [self.delegate screenDidWake];
-    
+    printf("screensDidWake\n");
     
 }
 - (void)screensDidSleep:(NSNotification *)note {
     
     [self.delegate screenDidSleep];
+    printf("screensDidSleep\n");
+}
+- (void)computerSleep:(NSNotification *)note {
+    
+    [self.delegate computerSleep];
+    printf("computerSleep\n");
+}
+- (void)computerWake:(NSNotification *)note {
+    printf("computerWake\n");
+    [self.delegate computerWake];
     
 }
 

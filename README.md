@@ -1,4 +1,8 @@
 # AlienFX-For-MacOS
+
+### 20220726
+1. Fixed sleep/wake related issue
+
 Control your logo&amp;keyboard light of Alienware FX in Mac OS
 
 Screenshot:

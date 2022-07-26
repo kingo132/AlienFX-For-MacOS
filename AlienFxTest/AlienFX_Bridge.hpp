@@ -11,6 +11,8 @@
 
 - (int)initAlienFx;
 
+//- (int)reinitAlienFx;
+
 - (int)uninitAlienFx;
 
 - (bool)ToggleKeyboardBrightness:(uint8)brightness;
