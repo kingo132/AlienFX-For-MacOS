@@ -1,11 +1,3 @@
-//
-//  ScreenStateObserver.m
-//  AutoMute
-//
-//  Created by Zac Cohan on 23/8/19.
-//  Copyright © 2019 Zac Cohan. All rights reserved.
-//
-
 #import "ScreenStateObserver.h"
 
 @implementation ScreenStateObserver
@@ -14,39 +6,50 @@
 {
     self = [super init];
     if (self) {
-        
-        [[NSWorkspace sharedWorkspace].notificationCenter addObserver:self selector:@selector(screensDidWake:) name:NSWorkspaceScreensDidWakeNotification object:nil];
-
-        [[NSWorkspace sharedWorkspace].notificationCenter addObserver:self selector:@selector(screensDidSleep:) name:NSWorkspaceScreensDidSleepNotification object:nil];
-        
-        [[NSWorkspace sharedWorkspace].notificationCenter addObserver:self selector:@selector(computerSleep:) name:NSWorkspaceWillSleepNotification object:nil];
-        
-        [[NSWorkspace sharedWorkspace].notificationCenter addObserver:self selector:@selector(computerWake:) name:NSWorkspaceDidWakeNotification object:nil];
-
+        NSNotificationCenter *center = [NSWorkspace sharedWorkspace].notificationCenter;
+        [center addObserver:self selector:@selector(screensDidWake:) name:NSWorkspaceScreensDidWakeNotification object:nil];
+        [center addObserver:self selector:@selector(screensDidSleep:) name:NSWorkspaceScreensDidSleepNotification object:nil];
+        [center addObserver:self selector:@selector(computerSleep:) name:NSWorkspaceWillSleepNotification object:nil];
+        [center addObserver:self selector:@selector(computerWake:) name:NSWorkspaceDidWakeNotification object:nil];
+        [center addObserver:self selector:@selector(sessionDidLockNotification:) name:NSWorkspaceSessionDidResignActiveNotification object:nil];
+        [center addObserver:self selector:@selector(sessionDidUnlockNotification:) name:NSWorkspaceSessionDidBecomeActiveNotification object:nil];
     }
     return self;
 }
 
-- (void)screensDidWake:(NSNotification *)note {
-    
+- (void)dealloc
+{
+    [[NSWorkspace sharedWorkspace].notificationCenter removeObserver:self];
+}
+
+- (void)screensDidWake:(NSNotification *)note
+{
     [self.delegate screenDidWake];
-    printf("screensDidWake\n");
-    
 }
-- (void)screensDidSleep:(NSNotification *)note {
-    
+
+- (void)screensDidSleep:(NSNotification *)note
+{
     [self.delegate screenDidSleep];
-    printf("screensDidSleep\n");
 }
-- (void)computerSleep:(NSNotification *)note {
-    
+
+- (void)computerSleep:(NSNotification *)note
+{
     [self.delegate computerSleep];
-    printf("computerSleep\n");
 }
-- (void)computerWake:(NSNotification *)note {
-    printf("computerWake\n");
+
+- (void)computerWake:(NSNotification *)note
+{
     [self.delegate computerWake];
-    
+}
+
+- (void)sessionDidLockNotification:(NSNotification *)note
+{
+    [self.delegate sessionDidLock];
+}
+
+- (void)sessionDidUnlockNotification:(NSNotification *)note
+{
+    [self.delegate sessionDidUnlock];
 }
 
 @end

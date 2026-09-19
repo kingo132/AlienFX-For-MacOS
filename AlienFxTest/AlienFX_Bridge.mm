@@ -4,69 +4,76 @@
 @implementation AlienFX_Bridge
 
 static AlienFX_Bridge *_sharedManager = nil;
-int _lastKeyboardBrightnessSave = 50;
+static AlienFX_SDK::Functions keyboardFn;
+static AlienFX_SDK::Functions chassisFn;
+static int keyboardInitResult = -999;
+static int chassisInitResult = -999;
 
-+(AlienFX_Bridge *)sharedManager {
-    if(!_sharedManager)
++ (AlienFX_Bridge *)sharedManager
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         _sharedManager = [[self alloc] init];
+    });
     return _sharedManager;
 }
 
-AlienFX_SDK::Functions keyboardFn;
-AlienFX_SDK::Functions otherFn;
-
-- (int)initAlienFx
+- (BOOL)initAlienFx
 {
-    int ret1 = keyboardFn.AlienFXInitialize(0xd62, 0x1a1c, 64);
-    int ret2 = otherFn.AlienFXInitialize(0x187c, 0x550, 34);
-    return (ret1 == 0) && (ret2 == 0);
-}
-
-/*- (int)reinitAlienFx
-{
-    int ret1 = keyboardFn.AlienFXReinitialize();
-    int ret2 = otherFn.AlienFXReinitialize();
-    return (ret1 == 0) && (ret2 == 0);
-}*/
-
-- (int)uninitAlienFx
-{
+    // Make repeated wake/reconnect calls idempotent and avoid duplicate
+    // IOHIDManager instances on the main run loop.
     keyboardFn.AlienFXClose();
-    otherFn.AlienFXClose();
-    return 0;
+    chassisFn.AlienFXClose();
+
+    // Area-51m R2 keyboard: API v5, 64-byte HID report.
+    keyboardInitResult = keyboardFn.AlienFXInitialize(0x0d62, 0x1a1c, 64);
+    // Area-51m R2 chassis / logo / Tron lights: API v4, 34-byte report.
+    chassisInitResult = chassisFn.AlienFXInitialize(0x187c, 0x0550, 34);
+
+    return keyboardInitResult == 0 && chassisInitResult == 0;
 }
 
-- (bool)ToggleKeyboardBrightness:(uint8)brightness
+- (BOOL)uninitAlienFx
 {
-    _lastKeyboardBrightnessSave = (brightness * 0xFE) / 100.0;
-    return keyboardFn.ToggleState(_lastKeyboardBrightnessSave);
+    BOOL keyboardOK = keyboardFn.AlienFXClose();
+    BOOL chassisOK = chassisFn.AlienFXClose();
+    return keyboardOK && chassisOK;
 }
 
-- (bool)ToggleOtherBrightness:(uint8)brightness
+- (BOOL)keyboardConnected
 {
-    return otherFn.ToggleState((brightness * 0xF0) / 100.0);
+    return keyboardFn.IsConnected();
 }
 
-- (bool)TurnOffOnScreenOff
+- (BOOL)chassisConnected
 {
-    bool ret = keyboardFn.ToggleState(0);
-    if (! ret) {
-        [self initAlienFx];
-        
-        ret = keyboardFn.ToggleState(0);
-    }
-    return ret;
+    return chassisFn.IsConnected();
 }
 
-- (bool)RestoreOnScreenOn
+- (int)keyboardInitStatus
 {
-    bool ret = keyboardFn.ToggleState(_lastKeyboardBrightnessSave);
-    if (! ret) {
-        [self initAlienFx];
-        
-        ret = keyboardFn.ToggleState(_lastKeyboardBrightnessSave);
-    }
-    return ret;
+    return keyboardInitResult;
+}
+
+- (int)chassisInitStatus
+{
+    return chassisInitResult;
+}
+
+- (BOOL)setKeyboardBrightness:(uint8_t)brightness
+{
+    brightness = MIN((uint8_t)100, brightness);
+    // API v5 uses 00..FE here in the proven Area-51m R2 path.
+    const uint8_t hardwareBrightness = (uint8_t)((brightness * 0xFEu) / 100u);
+    return keyboardFn.ToggleState(hardwareBrightness);
+}
+
+- (BOOL)setChassisBrightness:(uint8_t)brightness
+{
+    brightness = MIN((uint8_t)100, brightness);
+    // Preserve the scaling used by the original working app.
+    const uint8_t hardwareBrightness = (uint8_t)((brightness * 0xF0u) / 100u);
+    return chassisFn.ToggleState(hardwareBrightness);
 }
 
 @end

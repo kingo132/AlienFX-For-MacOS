@@ -1,0 +1,293 @@
+---
+triple:          'x86_64-apple-darwin'
+binary-path:     '/Users/jason/code/GitHub/AlienFX-For-MacOS/build/Build/Products/Release/AlienFX.app/Contents/MacOS/AlienFX'
+relocations:
+  - { offset: 0xDF5A9, size: 0x8, addend: 0x0, symName: '+[AlienFX_Bridge sharedManager]', symObjAddr: 0x0, symBinAddr: 0x1000013C8, symSize: 0x63 }
+  - { offset: 0xDF5C3, size: 0x8, addend: 0x0, symName: __ZL14_sharedManager, symObjAddr: 0x1F898, symBinAddr: 0x100014368, symSize: 0x0 }
+  - { offset: 0xDF60E, size: 0x8, addend: 0x0, symName: '+[AlienFX_Bridge sharedManager]', symObjAddr: 0x0, symBinAddr: 0x1000013C8, symSize: 0x63 }
+  - { offset: 0xDF638, size: 0x8, addend: 0x0, symName: '__ZZ31+[AlienFX_Bridge sharedManager]E9onceToken', symObjAddr: 0x1F8A0, symBinAddr: 0x100014370, symSize: 0x0 }
+  - { offset: 0xDF6BD, size: 0x8, addend: 0x0, symName: __ZL10keyboardFn, symObjAddr: 0x210, symBinAddr: 0x100014188, symSize: 0x0 }
+  - { offset: 0xE72E8, size: 0x8, addend: 0x0, symName: __ZL9chassisFn, symObjAddr: 0x240, symBinAddr: 0x1000141B8, symSize: 0x0 }
+  - { offset: 0xE7302, size: 0x8, addend: 0x0, symName: __ZL18keyboardInitResult, symObjAddr: 0x208, symBinAddr: 0x100014180, symSize: 0x0 }
+  - { offset: 0xE731C, size: 0x8, addend: 0x0, symName: __ZL17chassisInitResult, symObjAddr: 0x20C, symBinAddr: 0x100014184, symSize: 0x0 }
+  - { offset: 0xE73DC, size: 0x8, addend: 0x0, symName: '___31+[AlienFX_Bridge sharedManager]_block_invoke', symObjAddr: 0x63, symBinAddr: 0x10000142B, symSize: 0x22 }
+  - { offset: 0xE7427, size: 0x8, addend: 0x0, symName: '-[AlienFX_Bridge initAlienFx]', symObjAddr: 0x85, symBinAddr: 0x10000144D, symSize: 0x71 }
+  - { offset: 0xE745A, size: 0x8, addend: 0x0, symName: '-[AlienFX_Bridge uninitAlienFx]', symObjAddr: 0xF6, symBinAddr: 0x1000014BE, symSize: 0x2C }
+  - { offset: 0xE74A5, size: 0x8, addend: 0x0, symName: '-[AlienFX_Bridge keyboardConnected]', symObjAddr: 0x122, symBinAddr: 0x1000014EA, symSize: 0x15 }
+  - { offset: 0xE74D8, size: 0x8, addend: 0x0, symName: '-[AlienFX_Bridge chassisConnected]', symObjAddr: 0x137, symBinAddr: 0x1000014FF, symSize: 0x15 }
+  - { offset: 0xE750B, size: 0x8, addend: 0x0, symName: '-[AlienFX_Bridge keyboardInitStatus]', symObjAddr: 0x14C, symBinAddr: 0x100001514, symSize: 0xC }
+  - { offset: 0xE753E, size: 0x8, addend: 0x0, symName: '-[AlienFX_Bridge chassisInitStatus]', symObjAddr: 0x158, symBinAddr: 0x100001520, symSize: 0xC }
+  - { offset: 0xE7571, size: 0x8, addend: 0x0, symName: '-[AlienFX_Bridge setKeyboardBrightness:]', symObjAddr: 0x164, symBinAddr: 0x10000152C, symSize: 0x3B }
+  - { offset: 0xE75EA, size: 0x8, addend: 0x0, symName: '-[AlienFX_Bridge setChassisBrightness:]', symObjAddr: 0x19F, symBinAddr: 0x100001567, symSize: 0x30 }
+  - { offset: 0xE9AF3, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDKL6COMMV5E, symObjAddr: 0x4780, symBinAddr: 0x10000F360, symSize: 0x0 }
+  - { offset: 0xE9B84, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDKL6COMMV4E, symObjAddr: 0x47D7, symBinAddr: 0x10000F3B7, symSize: 0x0 }
+  - { offset: 0xF6B68, size: 0x8, addend: 0x0, symName: __ZNSt3__119__allocate_at_leastB8ne180100INS_9allocatorIN11AlienFX_SDK7afx_actEEEEENS_19__allocation_resultINS_16allocator_traitsIT_E7pointerEEERS7_m, symObjAddr: 0x3AB0, symBinAddr: 0x100005048, symSize: 0x34 }
+  - { offset: 0xF6C10, size: 0x8, addend: 0x0, symName: __ZNKSt3__16vectorINS0_IN11AlienFX_SDK7afx_actENS_9allocatorIS2_EEEENS3_IS5_EEE20__throw_out_of_rangeB8ne180100Ev, symObjAddr: 0x3AE4, symBinAddr: 0x10000507C, symSize: 0x10 }
+  - { offset: 0xF7006, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIN11AlienFX_SDK5groupENS_9allocatorIS2_EEE21__push_back_slow_pathIRKS2_EEPS2_OT_, symObjAddr: 0x4030, symBinAddr: 0x10000559C, symSize: 0x102 }
+  - { offset: 0xF701B, size: 0x8, addend: 0x0, symName: __ZNSt3__119__allocate_at_leastB8ne180100INS_9allocatorIP13__IOHIDDeviceEEEENS_19__allocation_resultINS_16allocator_traitsIT_E7pointerEEERS7_m, symObjAddr: 0x379A, symBinAddr: 0x100004D32, symSize: 0x2E }
+  - { offset: 0xF70C3, size: 0x8, addend: 0x0, symName: __ZNSt3__120__throw_length_errorB8ne180100EPKc, symObjAddr: 0x37C8, symBinAddr: 0x100004D60, symSize: 0x4C }
+  - { offset: 0xF70D8, size: 0x8, addend: 0x0, symName: __ZNSt3__120__throw_length_errorB8ne180100EPKc, symObjAddr: 0x37C8, symBinAddr: 0x100004D60, symSize: 0x4C }
+  - { offset: 0xF7678, size: 0x8, addend: 0x0, symName: __ZNSt3__120__throw_out_of_rangeB8ne180100EPKc, symObjAddr: 0x3AF4, symBinAddr: 0x10000508C, symSize: 0x4C }
+  - { offset: 0xF76E6, size: 0x8, addend: 0x0, symName: __ZNSt3__119__allocate_at_leastB8ne180100INS_9allocatorIN11AlienFX_SDK7mappingEEEEENS_19__allocation_resultINS_16allocator_traitsIT_E7pointerEEERS7_m, symObjAddr: 0x3E70, symBinAddr: 0x100005408, symSize: 0x38 }
+  - { offset: 0xF778E, size: 0x8, addend: 0x0, symName: __ZNSt3__128__exception_guard_exceptionsINS_29_AllocatorDestroyRangeReverseINS_9allocatorIN11AlienFX_SDK7mappingEEENS_16reverse_iteratorIPS4_EEEEED2B8ne180100Ev, symObjAddr: 0x3EA8, symBinAddr: 0x100005440, symSize: 0x1A }
+  - { offset: 0xF7E3B, size: 0x8, addend: 0x0, symName: __ZNSt3__119__allocate_at_leastB8ne180100INS_9allocatorIN11AlienFX_SDK5groupEEEEENS_19__allocation_resultINS_16allocator_traitsIT_E7pointerEEERS7_m, symObjAddr: 0x42EC, symBinAddr: 0x100005858, symSize: 0x30 }
+  - { offset: 0xF7EE3, size: 0x8, addend: 0x0, symName: __ZNSt3__142__uninitialized_allocator_move_if_noexceptB8ne180100INS_9allocatorIN11AlienFX_SDK5groupEEENS_16reverse_iteratorIPS3_EES7_S7_EET2_RT_T0_T1_S8_, symObjAddr: 0x431C, symBinAddr: 0x100005888, symSize: 0xAE }
+  - { offset: 0xF833A, size: 0x8, addend: 0x0, symName: __ZNSt3__142__uninitialized_allocator_move_if_noexceptB8ne180100INS_9allocatorIN11AlienFX_SDK5groupEEENS_16reverse_iteratorIPS3_EES7_S7_EET2_RT_T0_T1_S8_, symObjAddr: 0x431C, symBinAddr: 0x100005888, symSize: 0xAE }
+  - { offset: 0xF9725, size: 0x8, addend: 0x0, symName: __ZSt28__throw_bad_array_new_lengthB8ne180100v, symObjAddr: 0x3837, symBinAddr: 0x100004DCF, symSize: 0x31 }
+  - { offset: 0xFA293, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIN11AlienFX_SDK7mappingENS_9allocatorIS2_EEE26__swap_out_circular_bufferERNS_14__split_bufferIS2_RS4_EE, symObjAddr: 0x3D82, symBinAddr: 0x10000531A, symSize: 0xDE }
+  - { offset: 0xFA5D4, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIN11AlienFX_SDK5groupENS_9allocatorIS2_EEE26__swap_out_circular_bufferERNS_14__split_bufferIS2_RS4_EE, symObjAddr: 0x4262, symBinAddr: 0x1000057CE, symSize: 0x7A }
+  - { offset: 0xFA785, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions15SetMaskAndColorEiPhhhhhhh, symObjAddr: 0x0, symBinAddr: 0x100001598, symSize: 0xA0 }
+  - { offset: 0xFA9F4, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions17AlienFXInitializeEiii, symObjAddr: 0xA0, symBinAddr: 0x100001638, symSize: 0x252 }
+  - { offset: 0xFB0A8, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions12AlienFXCloseEv, symObjAddr: 0x2F2, symBinAddr: 0x10000188A, symSize: 0x9A }
+  - { offset: 0xFB4CE, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIP13__IOHIDDeviceNS_9allocatorIS2_EEEC2Em, symObjAddr: 0x36E4, symBinAddr: 0x100004C7C, symSize: 0x6C }
+  - { offset: 0xFB7C0, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK8MappingsD2Ev, symObjAddr: 0x3114, symBinAddr: 0x1000046AC, symSize: 0x92 }
+  - { offset: 0xFBBA4, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions28HandleDeviceMatchingCallbackEPviS1_P13__IOHIDDevice, symObjAddr: 0x38C, symBinAddr: 0x100001924, symSize: 0x14 }
+  - { offset: 0xFBBFF, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions27HandleDeviceRemovalCallbackEPviS1_P13__IOHIDDevice, symObjAddr: 0x3A0, symBinAddr: 0x100001938, symSize: 0x1A }
+  - { offset: 0xFBC58, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions16HidInputCallbackEPviS1_15IOHIDReportTypejPhl, symObjAddr: 0x3BA, symBinAddr: 0x100001952, symSize: 0x6 }
+  - { offset: 0xFBCD2, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions14HidDSetFeatureEPhi, symObjAddr: 0x3C0, symBinAddr: 0x100001958, symSize: 0x2C }
+  - { offset: 0xFBD6D, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions19HidDSetOutputReportEPhi, symObjAddr: 0x3EC, symBinAddr: 0x100001984, symSize: 0x3C }
+  - { offset: 0xFBDFD, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions14HidDGetFeatureEPhi, symObjAddr: 0x428, symBinAddr: 0x1000019C0, symSize: 0x38 }
+  - { offset: 0xFBEB3, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions18HidDGetInputReportEPhRi, symObjAddr: 0x460, symBinAddr: 0x1000019F8, symSize: 0x48 }
+  - { offset: 0xFBF9B, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions4LoopEv, symObjAddr: 0x4A8, symBinAddr: 0x100001A40, symSize: 0xA8 }
+  - { offset: 0xFC065, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions5ResetEv, symObjAddr: 0x550, symBinAddr: 0x100001AE8, symSize: 0xFC }
+  - { offset: 0xFC185, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions19AlienfxWaitForReadyEv, symObjAddr: 0x64C, symBinAddr: 0x100001BE4, symSize: 0x60 }
+  - { offset: 0xFC263, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions22AlienfxGetDeviceStatusEv, symObjAddr: 0x2FAE, symBinAddr: 0x100004546, symSize: 0xFC }
+  - { offset: 0xFC361, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions12UpdateColorsEv, symObjAddr: 0x6AC, symBinAddr: 0x100001C44, symSize: 0x106 }
+  - { offset: 0xFC4BC, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions8SetColorEjhhh, symObjAddr: 0x7B2, symBinAddr: 0x100001D4A, symSize: 0x1F0 }
+  - { offset: 0xFC69B, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions14SetMultiLightsEiPhiii, symObjAddr: 0x9A2, symBinAddr: 0x100001F3A, symSize: 0x30A }
+  - { offset: 0xFCB91, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions13SetMultiColorEiPhNSt3__16vectorINS3_INS_7afx_actENS2_9allocatorIS4_EEEENS5_IS7_EEEEb, symObjAddr: 0xCAC, symBinAddr: 0x100002244, symSize: 0x488 }
+  - { offset: 0xFD50E, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions14SetPowerActionEiaaaaaaiPhPNSt3__16vectorINS3_INS_7afx_actENS2_9allocatorIS4_EEEENS5_IS7_EEEE, symObjAddr: 0x1134, symBinAddr: 0x1000026CC, symSize: 0x164C }
+  - { offset: 0x101CD8, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIN11AlienFX_SDK7afx_actENS_9allocatorIS2_EEE16__init_with_sizeB8ne180100IPS2_S7_EEvT_T0_m, symObjAddr: 0x39F8, symBinAddr: 0x100004F90, symSize: 0x64 }
+  - { offset: 0x102124, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions9SetActionEiNSt3__16vectorINS_7afx_actENS1_9allocatorIS3_EEEE, symObjAddr: 0x2780, symBinAddr: 0x100003D18, symSize: 0x420 }
+  - { offset: 0x10276E, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions13IsDeviceReadyEv, symObjAddr: 0x2BA0, symBinAddr: 0x100004138, symSize: 0x94 }
+  - { offset: 0x102817, size: 0x8, addend: 0x0, symName: __ZNKSt3__16vectorINS0_IN11AlienFX_SDK7afx_actENS_9allocatorIS2_EEEENS3_IS5_EEE20__throw_out_of_rangeB8ne180100Ev, symObjAddr: 0x3AE4, symBinAddr: 0x10000507C, symSize: 0x10 }
+  - { offset: 0x102841, size: 0x8, addend: 0x0, symName: __ZNSt3__120__throw_out_of_rangeB8ne180100EPKc, symObjAddr: 0x3AF4, symBinAddr: 0x10000508C, symSize: 0x4C }
+  - { offset: 0x10284C, size: 0x8, addend: 0x0, symName: __ZNKSt3__16vectorIN11AlienFX_SDK7afx_actENS_9allocatorIS2_EEE20__throw_length_errorB8ne180100Ev, symObjAddr: 0x3AA0, symBinAddr: 0x100005038, symSize: 0x10 }
+  - { offset: 0x102876, size: 0x8, addend: 0x0, symName: __ZNSt3__119__allocate_at_leastB8ne180100INS_9allocatorIN11AlienFX_SDK7afx_actEEEEENS_19__allocation_resultINS_16allocator_traitsIT_E7pointerEEERS7_m, symObjAddr: 0x3AB0, symBinAddr: 0x100005048, symSize: 0x34 }
+  - { offset: 0x102881, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions11ToggleStateEaPNSt3__16vectorINS_7mappingENS1_9allocatorIS3_EEEEb, symObjAddr: 0x2C34, symBinAddr: 0x1000041CC, symSize: 0x25C }
+  - { offset: 0x102AE5, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK8Mappings11GetMappingsEv, symObjAddr: 0x2E90, symBinAddr: 0x100004428, symSize: 0xA }
+  - { offset: 0x102B0F, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions16SetGlobalEffectsEhiNS_7afx_actES1_, symObjAddr: 0x2E9A, symBinAddr: 0x100004432, symSize: 0x114 }
+  - { offset: 0x102C15, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions18AlienfxWaitForBusyEv, symObjAddr: 0x30AA, symBinAddr: 0x100004642, symSize: 0x60 }
+  - { offset: 0x102CF3, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK8MappingsD1Ev, symObjAddr: 0x310A, symBinAddr: 0x1000046A2, symSize: 0xA }
+  - { offset: 0x10301A, size: 0x8, addend: 0x0, symName: __ZNSt3__19allocatorIN11AlienFX_SDK5groupEE7destroyB8ne180100EPS2_, symObjAddr: 0x39C0, symBinAddr: 0x100004F58, symSize: 0x38 }
+  - { offset: 0x1032C5, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIN11AlienFX_SDK7mappingENS_9allocatorIS2_EEE22__base_destruct_at_endB8ne180100EPS2_, symObjAddr: 0x389A, symBinAddr: 0x100004E32, symSize: 0x42 }
+  - { offset: 0x1034B4, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIN11AlienFX_SDK6devmapENS_9allocatorIS2_EEE22__base_destruct_at_endB8ne180100EPS2_, symObjAddr: 0x390E, symBinAddr: 0x100004EA6, symSize: 0x42 }
+  - { offset: 0x1036A3, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIN11AlienFX_SDK5groupENS_9allocatorIS2_EEE16__destroy_vectorclB8ne180100Ev, symObjAddr: 0x3950, symBinAddr: 0x100004EE8, symSize: 0x70 }
+  - { offset: 0x1037F5, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIN11AlienFX_SDK6devmapENS_9allocatorIS2_EEE16__destroy_vectorclB8ne180100Ev, symObjAddr: 0x38DC, symBinAddr: 0x100004E74, symSize: 0x32 }
+  - { offset: 0x1038EA, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIN11AlienFX_SDK7mappingENS_9allocatorIS2_EEE16__destroy_vectorclB8ne180100Ev, symObjAddr: 0x3868, symBinAddr: 0x100004E00, symSize: 0x32 }
+  - { offset: 0x1039DF, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK8Mappings13GetDeviceByIdEii, symObjAddr: 0x31A6, symBinAddr: 0x10000473E, symSize: 0x44 }
+  - { offset: 0x103A3F, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK8Mappings14GetMappingByIdEii, symObjAddr: 0x31EA, symBinAddr: 0x100004782, symSize: 0x52 }
+  - { offset: 0x103AA9, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK8Mappings9GetGroupsEv, symObjAddr: 0x323C, symBinAddr: 0x1000047D4, symSize: 0xA }
+  - { offset: 0x103C8C, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK8Mappings10AddMappingEiiPci, symObjAddr: 0x3246, symBinAddr: 0x1000047DE, symSize: 0xCE }
+  - { offset: 0x103F98, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIN11AlienFX_SDK7mappingENS_9allocatorIS2_EEE22__construct_one_at_endB8ne180100IJRKS2_EEEvDpOT_, symObjAddr: 0x3B64, symBinAddr: 0x1000050FC, symSize: 0x5A }
+  - { offset: 0x1041C5, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIN11AlienFX_SDK7mappingENS_9allocatorIS2_EEE21__push_back_slow_pathIRKS2_EEPS2_OT_, symObjAddr: 0x3BBE, symBinAddr: 0x100005156, symSize: 0x130 }
+  - { offset: 0x104573, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK8Mappings12GetGroupByIdEi, symObjAddr: 0x3314, symBinAddr: 0x1000048AC, symSize: 0x48 }
+  - { offset: 0x104D67, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK8Mappings8AddGroupEiPciPi, symObjAddr: 0x335C, symBinAddr: 0x1000048F4, symSize: 0x21C }
+  - { offset: 0x105882, size: 0x8, addend: 0x0, symName: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC2B8ne180100ILi0EEEPKc, symObjAddr: 0x3F5E, symBinAddr: 0x1000054F6, symSize: 0x94 }
+  - { offset: 0x105CF7, size: 0x8, addend: 0x0, symName: __ZNSt3__19allocatorIN11AlienFX_SDK5groupEE9constructB8ne180100IS2_JRKS2_EEEvPT_DpOT0_, symObjAddr: 0x4132, symBinAddr: 0x10000569E, symSize: 0x92 }
+  - { offset: 0x105FAC, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIN11AlienFX_SDK5groupENS_9allocatorIS2_EEE21__push_back_slow_pathIRKS2_EEPS2_OT_, symObjAddr: 0x4030, symBinAddr: 0x10000559C, symSize: 0x102 }
+  - { offset: 0x106297, size: 0x8, addend: 0x0, symName: __ZNKSt3__16vectorIPN11AlienFX_SDK7mappingENS_9allocatorIS3_EEE20__throw_length_errorB8ne180100Ev, symObjAddr: 0x3FF2, symBinAddr: 0x10000558A, symSize: 0x10 }
+  - { offset: 0x1062CC, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK5groupD1Ev, symObjAddr: 0x3578, symBinAddr: 0x100004B10, symSize: 0x38 }
+  - { offset: 0x10654B, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK8Mappings8GetFlagsEii, symObjAddr: 0x35B0, symBinAddr: 0x100004B48, symSize: 0x5A }
+  - { offset: 0x1065B5, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK8Mappings8SetFlagsEiii, symObjAddr: 0x360A, symBinAddr: 0x100004BA2, symSize: 0x56 }
+  - { offset: 0x10662E, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK8Mappings10GetDevicesEv, symObjAddr: 0x3660, symBinAddr: 0x100004BF8, symSize: 0xA }
+  - { offset: 0x106656, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions11IsConnectedEv, symObjAddr: 0x366A, symBinAddr: 0x100004C02, symSize: 0xE }
+  - { offset: 0x10667E, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions6GetPIDEv, symObjAddr: 0x3678, symBinAddr: 0x100004C10, symSize: 0xA }
+  - { offset: 0x1066A6, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions6GetVidEv, symObjAddr: 0x3682, symBinAddr: 0x100004C1A, symSize: 0xA }
+  - { offset: 0x1066CE, size: 0x8, addend: 0x0, symName: __ZN11AlienFX_SDK9Functions10GetVersionEv, symObjAddr: 0x368C, symBinAddr: 0x100004C24, symSize: 0x4A }
+  - { offset: 0x1068A0, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIP13__IOHIDDeviceNS_9allocatorIS2_EEE11__vallocateB8ne180100Em, symObjAddr: 0x3750, symBinAddr: 0x100004CE8, symSize: 0x3A }
+  - { offset: 0x10694A, size: 0x8, addend: 0x0, symName: __ZNKSt3__16vectorIP13__IOHIDDeviceNS_9allocatorIS2_EEE20__throw_length_errorB8ne180100Ev, symObjAddr: 0x378A, symBinAddr: 0x100004D22, symSize: 0x10 }
+  - { offset: 0x106974, size: 0x8, addend: 0x0, symName: __ZNSt3__119__allocate_at_leastB8ne180100INS_9allocatorIP13__IOHIDDeviceEEEENS_19__allocation_resultINS_16allocator_traitsIT_E7pointerEEERS7_m, symObjAddr: 0x379A, symBinAddr: 0x100004D32, symSize: 0x2E }
+  - { offset: 0x1069A1, size: 0x8, addend: 0x0, symName: __ZNSt12length_errorC1B8ne180100EPKc, symObjAddr: 0x3814, symBinAddr: 0x100004DAC, symSize: 0x23 }
+  - { offset: 0x106DEC, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIN11AlienFX_SDK7afx_actENS_9allocatorIS2_EEE11__vallocateB8ne180100Em, symObjAddr: 0x3A5C, symBinAddr: 0x100004FF4, symSize: 0x44 }
+  - { offset: 0x106EB8, size: 0x8, addend: 0x0, symName: __ZNSt12out_of_rangeC1B8ne180100EPKc, symObjAddr: 0x3B40, symBinAddr: 0x1000050D8, symSize: 0x24 }
+  - { offset: 0x10714B, size: 0x8, addend: 0x0, symName: __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE25__init_copy_ctor_externalEPKcm, symObjAddr: 0x3CEE, symBinAddr: 0x100005286, symSize: 0x84 }
+  - { offset: 0x10774F, size: 0x8, addend: 0x0, symName: __ZNSt3__114__split_bufferIN11AlienFX_SDK7mappingERNS_9allocatorIS2_EEED2Ev, symObjAddr: 0x3EF8, symBinAddr: 0x100005490, symSize: 0x28 }
+  - { offset: 0x10782B, size: 0x8, addend: 0x0, symName: __ZNKSt3__16vectorIN11AlienFX_SDK7mappingENS_9allocatorIS2_EEE20__throw_length_errorB8ne180100Ev, symObjAddr: 0x3E60, symBinAddr: 0x1000053F8, symSize: 0x10 }
+  - { offset: 0x107855, size: 0x8, addend: 0x0, symName: __ZNSt3__119__allocate_at_leastB8ne180100INS_9allocatorIN11AlienFX_SDK7mappingEEEEENS_19__allocation_resultINS_16allocator_traitsIT_E7pointerEEERS7_m, symObjAddr: 0x3E70, symBinAddr: 0x100005408, symSize: 0x38 }
+  - { offset: 0x107A34, size: 0x8, addend: 0x0, symName: __ZNKSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE20__throw_length_errorB8ne180100Ev, symObjAddr: 0x3D72, symBinAddr: 0x10000530A, symSize: 0x10 }
+  - { offset: 0x107A5E, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIN11AlienFX_SDK7mappingENS_9allocatorIS2_EEE26__swap_out_circular_bufferERNS_14__split_bufferIS2_RS4_EE, symObjAddr: 0x3D82, symBinAddr: 0x10000531A, symSize: 0xDE }
+  - { offset: 0x107C1F, size: 0x8, addend: 0x0, symName: __ZNSt3__128__exception_guard_exceptionsINS_29_AllocatorDestroyRangeReverseINS_9allocatorIN11AlienFX_SDK7mappingEEENS_16reverse_iteratorIPS4_EEEEED2B8ne180100Ev, symObjAddr: 0x3EA8, symBinAddr: 0x100005440, symSize: 0x1A }
+  - { offset: 0x107C7A, size: 0x8, addend: 0x0, symName: __ZNKSt3__129_AllocatorDestroyRangeReverseINS_9allocatorIN11AlienFX_SDK7mappingEEENS_16reverse_iteratorIPS3_EEEclB8ne180100Ev, symObjAddr: 0x3EC2, symBinAddr: 0x10000545A, symSize: 0x36 }
+  - { offset: 0x107F19, size: 0x8, addend: 0x0, symName: __ZNSt3__114__split_bufferIN11AlienFX_SDK7mappingERNS_9allocatorIS2_EEE17__destruct_at_endB8ne180100EPS2_, symObjAddr: 0x3F20, symBinAddr: 0x1000054B8, symSize: 0x3E }
+  - { offset: 0x1083B9, size: 0x8, addend: 0x0, symName: __ZNSt3__114__split_bufferIN11AlienFX_SDK5groupERNS_9allocatorIS2_EEED2Ev, symObjAddr: 0x4426, symBinAddr: 0x100005992, symSize: 0x24 }
+  - { offset: 0x108476, size: 0x8, addend: 0x0, symName: __ZNKSt3__16vectorIN11AlienFX_SDK5groupENS_9allocatorIS2_EEE20__throw_length_errorB8ne180100Ev, symObjAddr: 0x42DC, symBinAddr: 0x100005848, symSize: 0x10 }
+  - { offset: 0x1084A0, size: 0x8, addend: 0x0, symName: __ZNSt3__119__allocate_at_leastB8ne180100INS_9allocatorIN11AlienFX_SDK5groupEEEEENS_19__allocation_resultINS_16allocator_traitsIT_E7pointerEEERS7_m, symObjAddr: 0x42EC, symBinAddr: 0x100005858, symSize: 0x30 }
+  - { offset: 0x10853F, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIPN11AlienFX_SDK7mappingENS_9allocatorIS3_EEE16__init_with_sizeB8ne180100IPS3_S8_EEvT_T0_m, symObjAddr: 0x41C4, symBinAddr: 0x100005730, symSize: 0x64 }
+  - { offset: 0x108B36, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorIPN11AlienFX_SDK7mappingENS_9allocatorIS3_EEE11__vallocateB8ne180100Em, symObjAddr: 0x4228, symBinAddr: 0x100005794, symSize: 0x3A }
+  - { offset: 0x108E32, size: 0x8, addend: 0x0, symName: __ZNSt3__128__exception_guard_exceptionsINS_29_AllocatorDestroyRangeReverseINS_9allocatorIN11AlienFX_SDK5groupEEENS_16reverse_iteratorIPS4_EEEEED2B8ne180100Ev, symObjAddr: 0x43CA, symBinAddr: 0x100005936, symSize: 0x1A }
+  - { offset: 0x108E6B, size: 0x8, addend: 0x0, symName: __ZNKSt3__129_AllocatorDestroyRangeReverseINS_9allocatorIN11AlienFX_SDK5groupEEENS_16reverse_iteratorIPS3_EEEclB8ne180100Ev, symObjAddr: 0x43E4, symBinAddr: 0x100005950, symSize: 0x42 }
+  - { offset: 0x108F8A, size: 0x8, addend: 0x0, symName: __ZNSt3__114__split_bufferIN11AlienFX_SDK5groupERNS_9allocatorIS2_EEE5clearB8ne180100Ev, symObjAddr: 0x444A, symBinAddr: 0x1000059B6, symSize: 0x36 }
+  - { offset: 0x10AE97, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x1000059EC, symSize: 0xA }
+  - { offset: 0x10AEA5, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x1000059EC, symSize: 0xA }
+  - { offset: 0x10AF5E, size: 0x8, addend: 0x0, symName: '-[AFXHeaderView initWithFrame:]', symObjAddr: 0x0, symBinAddr: 0x1000059F6, symSize: 0x457 }
+  - { offset: 0x10B02E, size: 0x8, addend: 0x0, symName: '-[AppDelegate performReconnectAttempt:generation:]', symObjAddr: 0x4888, symBinAddr: 0x10000A27E, symSize: 0x1A0 }
+  - { offset: 0x10B056, size: 0x8, addend: 0x0, symName: '_performReconnectAttempt:generation:.delays', symObjAddr: 0xD540, symBinAddr: 0x10000F550, symSize: 0x0 }
+  - { offset: 0x10B826, size: 0x8, addend: 0x0, symName: '-[AFXHeaderView initWithFrame:]', symObjAddr: 0x0, symBinAddr: 0x1000059F6, symSize: 0x457 }
+  - { offset: 0x10BC77, size: 0x8, addend: 0x0, symName: '-[AFXHeaderView labelWithFrame:font:color:]', symObjAddr: 0x457, symBinAddr: 0x100005E4D, symSize: 0xFB }
+  - { offset: 0x10BDF7, size: 0x8, addend: 0x0, symName: '-[AFXHeaderView titleLabel]', symObjAddr: 0x552, symBinAddr: 0x100005F48, symSize: 0x11 }
+  - { offset: 0x10BE2C, size: 0x8, addend: 0x0, symName: '-[AFXHeaderView setTitleLabel:]', symObjAddr: 0x563, symBinAddr: 0x100005F59, symSize: 0x14 }
+  - { offset: 0x10BE6D, size: 0x8, addend: 0x0, symName: '-[AFXHeaderView keyboardLabel]', symObjAddr: 0x577, symBinAddr: 0x100005F6D, symSize: 0x11 }
+  - { offset: 0x10BEA2, size: 0x8, addend: 0x0, symName: '-[AFXHeaderView setKeyboardLabel:]', symObjAddr: 0x588, symBinAddr: 0x100005F7E, symSize: 0x14 }
+  - { offset: 0x10BEE3, size: 0x8, addend: 0x0, symName: '-[AFXHeaderView chassisLabel]', symObjAddr: 0x59C, symBinAddr: 0x100005F92, symSize: 0x11 }
+  - { offset: 0x10BF18, size: 0x8, addend: 0x0, symName: '-[AFXHeaderView setChassisLabel:]', symObjAddr: 0x5AD, symBinAddr: 0x100005FA3, symSize: 0x14 }
+  - { offset: 0x10BF59, size: 0x8, addend: 0x0, symName: '-[AFXHeaderView colorsLabel]', symObjAddr: 0x5C1, symBinAddr: 0x100005FB7, symSize: 0x11 }
+  - { offset: 0x10BF8E, size: 0x8, addend: 0x0, symName: '-[AFXHeaderView setColorsLabel:]', symObjAddr: 0x5D2, symBinAddr: 0x100005FC8, symSize: 0x14 }
+  - { offset: 0x10BFCF, size: 0x8, addend: 0x0, symName: '-[AFXHeaderView modeLabel]', symObjAddr: 0x5E6, symBinAddr: 0x100005FDC, symSize: 0x11 }
+  - { offset: 0x10C004, size: 0x8, addend: 0x0, symName: '-[AFXHeaderView setModeLabel:]', symObjAddr: 0x5F7, symBinAddr: 0x100005FED, symSize: 0x14 }
+  - { offset: 0x10C045, size: 0x8, addend: 0x0, symName: '-[AFXHeaderView .cxx_destruct]', symObjAddr: 0x60B, symBinAddr: 0x100006001, symSize: 0x64 }
+  - { offset: 0x10C078, size: 0x8, addend: 0x0, symName: '-[AFXBrightnessView initWithTitle:target:action:]', symObjAddr: 0x66F, symBinAddr: 0x100006065, symSize: 0x3F1 }
+  - { offset: 0x10C4F7, size: 0x8, addend: 0x0, symName: '-[AFXBrightnessView setBrightness:]', symObjAddr: 0xA60, symBinAddr: 0x100006456, symSize: 0xCD }
+  - { offset: 0x10C621, size: 0x8, addend: 0x0, symName: '-[AFXBrightnessView titleLabel]', symObjAddr: 0xB2D, symBinAddr: 0x100006523, symSize: 0x11 }
+  - { offset: 0x10C656, size: 0x8, addend: 0x0, symName: '-[AFXBrightnessView setTitleLabel:]', symObjAddr: 0xB3E, symBinAddr: 0x100006534, symSize: 0x14 }
+  - { offset: 0x10C697, size: 0x8, addend: 0x0, symName: '-[AFXBrightnessView valueLabel]', symObjAddr: 0xB52, symBinAddr: 0x100006548, symSize: 0x11 }
+  - { offset: 0x10C6CC, size: 0x8, addend: 0x0, symName: '-[AFXBrightnessView setValueLabel:]', symObjAddr: 0xB63, symBinAddr: 0x100006559, symSize: 0x14 }
+  - { offset: 0x10C70D, size: 0x8, addend: 0x0, symName: '-[AFXBrightnessView slider]', symObjAddr: 0xB77, symBinAddr: 0x10000656D, symSize: 0x11 }
+  - { offset: 0x10C742, size: 0x8, addend: 0x0, symName: '-[AFXBrightnessView setSlider:]', symObjAddr: 0xB88, symBinAddr: 0x10000657E, symSize: 0x14 }
+  - { offset: 0x10C783, size: 0x8, addend: 0x0, symName: '-[AFXBrightnessView .cxx_destruct]', symObjAddr: 0xB9C, symBinAddr: 0x100006592, symSize: 0x42 }
+  - { offset: 0x10C7B6, size: 0x8, addend: 0x0, symName: '-[AppDelegate applicationDidFinishLaunching:]', symObjAddr: 0xBDE, symBinAddr: 0x1000065D4, symSize: 0x105 }
+  - { offset: 0x10C909, size: 0x8, addend: 0x0, symName: '-[AppDelegate applicationWillTerminate:]', symObjAddr: 0xCE3, symBinAddr: 0x1000066D9, symSize: 0xD2 }
+  - { offset: 0x10CA7B, size: 0x8, addend: 0x0, symName: '-[AppDelegate registerDefaults]', symObjAddr: 0xDB5, symBinAddr: 0x1000067AB, symSize: 0x3B1 }
+  - { offset: 0x10CC6C, size: 0x8, addend: 0x0, symName: '-[AppDelegate loadSavedState]', symObjAddr: 0x1166, symBinAddr: 0x100006B5C, symSize: 0x112 }
+  - { offset: 0x10CDA4, size: 0x8, addend: 0x0, symName: '-[AppDelegate keyboardKeyForProfile:]', symObjAddr: 0x1278, symBinAddr: 0x100006C6E, symSize: 0x25 }
+  - { offset: 0x10CDFE, size: 0x8, addend: 0x0, symName: '-[AppDelegate chassisKeyForProfile:]', symObjAddr: 0x129D, symBinAddr: 0x100006C93, symSize: 0x25 }
+  - { offset: 0x10CE58, size: 0x8, addend: 0x0, symName: '-[AppDelegate profileNames]', symObjAddr: 0x12C2, symBinAddr: 0x100006CB8, symSize: 0x93 }
+  - { offset: 0x10CE98, size: 0x8, addend: 0x0, symName: '-[AppDelegate buildStatusMenu]', symObjAddr: 0x1355, symBinAddr: 0x100006D4B, symSize: 0x16A2 }
+  - { offset: 0x10E379, size: 0x8, addend: 0x0, symName: '-[AppDelegate menuWillOpen:]', symObjAddr: 0x29F7, symBinAddr: 0x1000083ED, symSize: 0xED }
+  - { offset: 0x10E4A9, size: 0x8, addend: 0x0, symName: '-[AppDelegate keyboardSliderChanged:]', symObjAddr: 0x2AE4, symBinAddr: 0x1000084DA, symSize: 0xB8 }
+  - { offset: 0x10E5AE, size: 0x8, addend: 0x0, symName: '-[AppDelegate chassisSliderChanged:]', symObjAddr: 0x2B9C, symBinAddr: 0x100008592, symSize: 0xB8 }
+  - { offset: 0x10E6B3, size: 0x8, addend: 0x0, symName: '-[AppDelegate persistDesiredState]', symObjAddr: 0x2C54, symBinAddr: 0x10000864A, symSize: 0xC4 }
+  - { offset: 0x10E7A2, size: 0x8, addend: 0x0, symName: '-[AppDelegate sendKeyboardBrightnessThrottled:immediate:]', symObjAddr: 0x2D18, symBinAddr: 0x10000870E, symSize: 0x1D1 }
+  - { offset: 0x10E9C7, size: 0x8, addend: 0x0, symName: '___57-[AppDelegate sendKeyboardBrightnessThrottled:immediate:]_block_invoke', symObjAddr: 0x2EE9, symBinAddr: 0x1000088DF, symSize: 0xCE }
+  - { offset: 0x10EA98, size: 0x8, addend: 0x0, symName: ___copy_helper_block_e8_32s, symObjAddr: 0x2FB7, symBinAddr: 0x1000089AD, symSize: 0xF }
+  - { offset: 0x10EACB, size: 0x8, addend: 0x0, symName: ___destroy_helper_block_e8_32s, symObjAddr: 0x2FC6, symBinAddr: 0x1000089BC, symSize: 0xF }
+  - { offset: 0x10EAF6, size: 0x8, addend: 0x0, symName: '-[AppDelegate sendChassisBrightnessThrottled:immediate:]', symObjAddr: 0x2FD5, symBinAddr: 0x1000089CB, symSize: 0x1D1 }
+  - { offset: 0x10ECD7, size: 0x8, addend: 0x0, symName: '___56-[AppDelegate sendChassisBrightnessThrottled:immediate:]_block_invoke', symObjAddr: 0x31A6, symBinAddr: 0x100008B9C, symSize: 0xCE }
+  - { offset: 0x10EDA8, size: 0x8, addend: 0x0, symName: '-[AppDelegate shouldForceLightsOff]', symObjAddr: 0x3274, symBinAddr: 0x100008C6A, symSize: 0xBC }
+  - { offset: 0x10EE7F, size: 0x8, addend: 0x0, symName: '-[AppDelegate calculateEffectiveKeyboard:chassis:]', symObjAddr: 0x3330, symBinAddr: 0x100008D26, symSize: 0xF1 }
+  - { offset: 0x10EF99, size: 0x8, addend: 0x0, symName: '-[AppDelegate applyEffectiveBrightnessImmediate:]', symObjAddr: 0x3421, symBinAddr: 0x100008E17, symSize: 0x14D }
+  - { offset: 0x10F159, size: 0x8, addend: 0x0, symName: '-[AppDelegate applyProfileFromMenu:]', symObjAddr: 0x356E, symBinAddr: 0x100008F64, symSize: 0x160 }
+  - { offset: 0x10F2F1, size: 0x8, addend: 0x0, symName: '-[AppDelegate saveCurrentAsProfile:]', symObjAddr: 0x36CE, symBinAddr: 0x1000090C4, symSize: 0x15B }
+  - { offset: 0x10F475, size: 0x8, addend: 0x0, symName: '-[AppDelegate toggleOffWithDisplay:]', symObjAddr: 0x3829, symBinAddr: 0x10000921F, symSize: 0xC9 }
+  - { offset: 0x10F549, size: 0x8, addend: 0x0, symName: '-[AppDelegate toggleOffWhileLocked:]', symObjAddr: 0x38F2, symBinAddr: 0x1000092E8, symSize: 0xC9 }
+  - { offset: 0x10F61D, size: 0x8, addend: 0x0, symName: '-[AppDelegate toggleBatteryProfile:]', symObjAddr: 0x39BB, symBinAddr: 0x1000093B1, symSize: 0xC9 }
+  - { offset: 0x10F6F1, size: 0x8, addend: 0x0, symName: '-[AppDelegate saveCurrentAsBatteryProfile:]', symObjAddr: 0x3A84, symBinAddr: 0x10000947A, symSize: 0xDA }
+  - { offset: 0x10F80F, size: 0x8, addend: 0x0, symName: '-[AppDelegate toggleLaunchAtLogin:]', symObjAddr: 0x3B5E, symBinAddr: 0x100009554, symSize: 0x2B7 }
+  - { offset: 0x10FAD2, size: 0x8, addend: 0x0, symName: '-[AppDelegate isRunningFromApplicationsFolder]', symObjAddr: 0x3E15, symBinAddr: 0x10000980B, symSize: 0x13F }
+  - { offset: 0x10FC40, size: 0x8, addend: 0x0, symName: '-[AppDelegate launchAtLoginStatusText]', symObjAddr: 0x3F54, symBinAddr: 0x10000994A, symSize: 0x96 }
+  - { offset: 0x10FCC9, size: 0x8, addend: 0x0, symName: '-[AppDelegate decreaseKeyboardBrightness:]', symObjAddr: 0x3FEA, symBinAddr: 0x1000099E0, symSize: 0x19 }
+  - { offset: 0x10FD2D, size: 0x8, addend: 0x0, symName: '-[AppDelegate increaseKeyboardBrightness:]', symObjAddr: 0x4003, symBinAddr: 0x1000099F9, symSize: 0x17 }
+  - { offset: 0x10FD87, size: 0x8, addend: 0x0, symName: '-[AppDelegate adjustKeyboardBrightnessByDelta:]', symObjAddr: 0x401A, symBinAddr: 0x100009A10, symSize: 0xE7 }
+  - { offset: 0x10FF07, size: 0x8, addend: 0x0, symName: '-[AppDelegate registerGlobalHotKeys]', symObjAddr: 0x4101, symBinAddr: 0x100009AF7, symSize: 0xE9 }
+  - { offset: 0x110110, size: 0x8, addend: 0x0, symName: _AFXHotKeyPressed, symObjAddr: 0x41EA, symBinAddr: 0x100009BE0, symSize: 0xF0 }
+  - { offset: 0x11027D, size: 0x8, addend: 0x0, symName: '-[AppDelegate unregisterGlobalHotKeys]', symObjAddr: 0x42DA, symBinAddr: 0x100009CD0, symSize: 0xDE }
+  - { offset: 0x1103EB, size: 0x8, addend: 0x0, symName: '-[AppDelegate startPowerSourceMonitoring]', symObjAddr: 0x43B8, symBinAddr: 0x100009DAE, symSize: 0xA0 }
+  - { offset: 0x1104F4, size: 0x8, addend: 0x0, symName: _AFXPowerSourceChanged, symObjAddr: 0x4458, symBinAddr: 0x100009E4E, symSize: 0x79 }
+  - { offset: 0x11057E, size: 0x8, addend: 0x0, symName: '-[AppDelegate queryOnBattery]', symObjAddr: 0x44D1, symBinAddr: 0x100009EC7, symSize: 0x54 }
+  - { offset: 0x110669, size: 0x8, addend: 0x0, symName: '-[AppDelegate powerSourceDidChange]', symObjAddr: 0x4525, symBinAddr: 0x100009F1B, symSize: 0x7A }
+  - { offset: 0x110711, size: 0x8, addend: 0x0, symName: '-[AppDelegate screenDidSleep]', symObjAddr: 0x459F, symBinAddr: 0x100009F95, symSize: 0x38 }
+  - { offset: 0x110773, size: 0x8, addend: 0x0, symName: '-[AppDelegate screenDidWake]', symObjAddr: 0x45D7, symBinAddr: 0x100009FCD, symSize: 0x35 }
+  - { offset: 0x1107D5, size: 0x8, addend: 0x0, symName: '-[AppDelegate sessionDidLock]', symObjAddr: 0x460C, symBinAddr: 0x10000A002, symSize: 0x38 }
+  - { offset: 0x110837, size: 0x8, addend: 0x0, symName: '-[AppDelegate sessionDidUnlock]', symObjAddr: 0x4644, symBinAddr: 0x10000A03A, symSize: 0x35 }
+  - { offset: 0x110899, size: 0x8, addend: 0x0, symName: '-[AppDelegate computerSleep]', symObjAddr: 0x4679, symBinAddr: 0x10000A06F, symSize: 0x8C }
+  - { offset: 0x110948, size: 0x8, addend: 0x0, symName: '-[AppDelegate computerWake]', symObjAddr: 0x4705, symBinAddr: 0x10000A0FB, symSize: 0x3A }
+  - { offset: 0x1109AA, size: 0x8, addend: 0x0, symName: '-[AppDelegate reconnectAlienFX:]', symObjAddr: 0x473F, symBinAddr: 0x10000A135, symSize: 0x17 }
+  - { offset: 0x110A04, size: 0x8, addend: 0x0, symName: '-[AppDelegate scheduleReconnectStartingAtAttempt:delay:]', symObjAddr: 0x4756, symBinAddr: 0x10000A14C, symSize: 0xD7 }
+  - { offset: 0x110AF6, size: 0x8, addend: 0x0, symName: '___56-[AppDelegate scheduleReconnectStartingAtAttempt:delay:]_block_invoke', symObjAddr: 0x482D, symBinAddr: 0x10000A223, symSize: 0x5B }
+  - { offset: 0x110B7E, size: 0x8, addend: 0x0, symName: '___50-[AppDelegate performReconnectAttempt:generation:]_block_invoke', symObjAddr: 0x4A28, symBinAddr: 0x10000A41E, symSize: 0x5E }
+  - { offset: 0x110C06, size: 0x8, addend: 0x0, symName: '-[AppDelegate refreshSliderValues]', symObjAddr: 0x4A86, symBinAddr: 0x10000A47C, symSize: 0xA1 }
+  - { offset: 0x110CD0, size: 0x8, addend: 0x0, symName: '-[AppDelegate refreshMenuState]', symObjAddr: 0x4B27, symBinAddr: 0x10000A51D, symSize: 0x48 }
+  - { offset: 0x110D4D, size: 0x8, addend: 0x0, symName: '-[AppDelegate refreshProfileMenu]', symObjAddr: 0x4B6F, symBinAddr: 0x10000A565, symSize: 0x229 }
+  - { offset: 0x110E81, size: 0x8, addend: 0x0, symName: '-[AppDelegate refreshAutomationMenu]', symObjAddr: 0x4D98, symBinAddr: 0x10000A78E, symSize: 0x2DE }
+  - { offset: 0x11111B, size: 0x8, addend: 0x0, symName: '-[AppDelegate updateHeader]', symObjAddr: 0x5076, symBinAddr: 0x10000AA6C, symSize: 0x4AD }
+  - { offset: 0x111507, size: 0x8, addend: 0x0, symName: '-[AppDelegate copyDiagnostics:]', symObjAddr: 0x5523, symBinAddr: 0x10000AF19, symSize: 0x5A7 }
+  - { offset: 0x111957, size: 0x8, addend: 0x0, symName: '___31-[AppDelegate copyDiagnostics:]_block_invoke', symObjAddr: 0x5ACA, symBinAddr: 0x10000B4C0, symSize: 0x48 }
+  - { offset: 0x1119BD, size: 0x8, addend: 0x0, symName: '-[AppDelegate quitApp:]', symObjAddr: 0x5B12, symBinAddr: 0x10000B508, symSize: 0x1E }
+  - { offset: 0x111A0D, size: 0x8, addend: 0x0, symName: '-[AppDelegate screenObserver]', symObjAddr: 0x5B30, symBinAddr: 0x10000B526, symSize: 0xA }
+  - { offset: 0x111A42, size: 0x8, addend: 0x0, symName: '-[AppDelegate setScreenObserver:]', symObjAddr: 0x5B3A, symBinAddr: 0x10000B530, symSize: 0x11 }
+  - { offset: 0x111A83, size: 0x8, addend: 0x0, symName: '-[AppDelegate statusItem]', symObjAddr: 0x5B4B, symBinAddr: 0x10000B541, symSize: 0xA }
+  - { offset: 0x111AB8, size: 0x8, addend: 0x0, symName: '-[AppDelegate setStatusItem:]', symObjAddr: 0x5B55, symBinAddr: 0x10000B54B, symSize: 0x11 }
+  - { offset: 0x111AF9, size: 0x8, addend: 0x0, symName: '-[AppDelegate statusMenu]', symObjAddr: 0x5B66, symBinAddr: 0x10000B55C, symSize: 0xA }
+  - { offset: 0x111B2E, size: 0x8, addend: 0x0, symName: '-[AppDelegate setStatusMenu:]', symObjAddr: 0x5B70, symBinAddr: 0x10000B566, symSize: 0x11 }
+  - { offset: 0x111B6F, size: 0x8, addend: 0x0, symName: '-[AppDelegate headerView]', symObjAddr: 0x5B81, symBinAddr: 0x10000B577, symSize: 0xA }
+  - { offset: 0x111BA4, size: 0x8, addend: 0x0, symName: '-[AppDelegate setHeaderView:]', symObjAddr: 0x5B8B, symBinAddr: 0x10000B581, symSize: 0x11 }
+  - { offset: 0x111BE5, size: 0x8, addend: 0x0, symName: '-[AppDelegate keyboardBrightnessView]', symObjAddr: 0x5B9C, symBinAddr: 0x10000B592, symSize: 0xA }
+  - { offset: 0x111C1A, size: 0x8, addend: 0x0, symName: '-[AppDelegate setKeyboardBrightnessView:]', symObjAddr: 0x5BA6, symBinAddr: 0x10000B59C, symSize: 0x11 }
+  - { offset: 0x111C5B, size: 0x8, addend: 0x0, symName: '-[AppDelegate chassisBrightnessView]', symObjAddr: 0x5BB7, symBinAddr: 0x10000B5AD, symSize: 0xA }
+  - { offset: 0x111C90, size: 0x8, addend: 0x0, symName: '-[AppDelegate setChassisBrightnessView:]', symObjAddr: 0x5BC1, symBinAddr: 0x10000B5B7, symSize: 0x11 }
+  - { offset: 0x111CD1, size: 0x8, addend: 0x0, symName: '-[AppDelegate profilesMenu]', symObjAddr: 0x5BD2, symBinAddr: 0x10000B5C8, symSize: 0xA }
+  - { offset: 0x111D06, size: 0x8, addend: 0x0, symName: '-[AppDelegate setProfilesMenu:]', symObjAddr: 0x5BDC, symBinAddr: 0x10000B5D2, symSize: 0x11 }
+  - { offset: 0x111D47, size: 0x8, addend: 0x0, symName: '-[AppDelegate automationMenu]', symObjAddr: 0x5BED, symBinAddr: 0x10000B5E3, symSize: 0xA }
+  - { offset: 0x111D7C, size: 0x8, addend: 0x0, symName: '-[AppDelegate setAutomationMenu:]', symObjAddr: 0x5BF7, symBinAddr: 0x10000B5ED, symSize: 0x11 }
+  - { offset: 0x111DBD, size: 0x8, addend: 0x0, symName: '-[AppDelegate profileItems]', symObjAddr: 0x5C08, symBinAddr: 0x10000B5FE, symSize: 0xA }
+  - { offset: 0x111DF2, size: 0x8, addend: 0x0, symName: '-[AppDelegate setProfileItems:]', symObjAddr: 0x5C12, symBinAddr: 0x10000B608, symSize: 0x11 }
+  - { offset: 0x111E33, size: 0x8, addend: 0x0, symName: '-[AppDelegate offWithDisplayItem]', symObjAddr: 0x5C23, symBinAddr: 0x10000B619, symSize: 0xA }
+  - { offset: 0x111E68, size: 0x8, addend: 0x0, symName: '-[AppDelegate setOffWithDisplayItem:]', symObjAddr: 0x5C2D, symBinAddr: 0x10000B623, symSize: 0x11 }
+  - { offset: 0x111EA9, size: 0x8, addend: 0x0, symName: '-[AppDelegate offWhileLockedItem]', symObjAddr: 0x5C3E, symBinAddr: 0x10000B634, symSize: 0xA }
+  - { offset: 0x111EDE, size: 0x8, addend: 0x0, symName: '-[AppDelegate setOffWhileLockedItem:]', symObjAddr: 0x5C48, symBinAddr: 0x10000B63E, symSize: 0x11 }
+  - { offset: 0x111F1F, size: 0x8, addend: 0x0, symName: '-[AppDelegate batteryProfileItem]', symObjAddr: 0x5C59, symBinAddr: 0x10000B64F, symSize: 0xA }
+  - { offset: 0x111F54, size: 0x8, addend: 0x0, symName: '-[AppDelegate setBatteryProfileItem:]', symObjAddr: 0x5C63, symBinAddr: 0x10000B659, symSize: 0x11 }
+  - { offset: 0x111F95, size: 0x8, addend: 0x0, symName: '-[AppDelegate batteryProfileDescriptionItem]', symObjAddr: 0x5C74, symBinAddr: 0x10000B66A, symSize: 0xA }
+  - { offset: 0x111FCA, size: 0x8, addend: 0x0, symName: '-[AppDelegate setBatteryProfileDescriptionItem:]', symObjAddr: 0x5C7E, symBinAddr: 0x10000B674, symSize: 0x11 }
+  - { offset: 0x11200B, size: 0x8, addend: 0x0, symName: '-[AppDelegate launchAtLoginItem]', symObjAddr: 0x5C8F, symBinAddr: 0x10000B685, symSize: 0xA }
+  - { offset: 0x112040, size: 0x8, addend: 0x0, symName: '-[AppDelegate setLaunchAtLoginItem:]', symObjAddr: 0x5C99, symBinAddr: 0x10000B68F, symSize: 0x11 }
+  - { offset: 0x112081, size: 0x8, addend: 0x0, symName: '-[AppDelegate diagnosticsItem]', symObjAddr: 0x5CAA, symBinAddr: 0x10000B6A0, symSize: 0xD }
+  - { offset: 0x1120B6, size: 0x8, addend: 0x0, symName: '-[AppDelegate setDiagnosticsItem:]', symObjAddr: 0x5CB7, symBinAddr: 0x10000B6AD, symSize: 0x11 }
+  - { offset: 0x1120F7, size: 0x8, addend: 0x0, symName: '-[AppDelegate brightnessDownHotKey]', symObjAddr: 0x5CC8, symBinAddr: 0x10000B6BE, symSize: 0xD }
+  - { offset: 0x11212C, size: 0x8, addend: 0x0, symName: '-[AppDelegate setBrightnessDownHotKey:]', symObjAddr: 0x5CD5, symBinAddr: 0x10000B6CB, symSize: 0xD }
+  - { offset: 0x112169, size: 0x8, addend: 0x0, symName: '-[AppDelegate brightnessUpHotKey]', symObjAddr: 0x5CE2, symBinAddr: 0x10000B6D8, symSize: 0xD }
+  - { offset: 0x11219E, size: 0x8, addend: 0x0, symName: '-[AppDelegate setBrightnessUpHotKey:]', symObjAddr: 0x5CEF, symBinAddr: 0x10000B6E5, symSize: 0xD }
+  - { offset: 0x1121DB, size: 0x8, addend: 0x0, symName: '-[AppDelegate hotKeyEventHandler]', symObjAddr: 0x5CFC, symBinAddr: 0x10000B6F2, symSize: 0xD }
+  - { offset: 0x112210, size: 0x8, addend: 0x0, symName: '-[AppDelegate setHotKeyEventHandler:]', symObjAddr: 0x5D09, symBinAddr: 0x10000B6FF, symSize: 0xD }
+  - { offset: 0x11224D, size: 0x8, addend: 0x0, symName: '-[AppDelegate desiredKeyboardBrightness]', symObjAddr: 0x5D16, symBinAddr: 0x10000B70C, symSize: 0xD }
+  - { offset: 0x112282, size: 0x8, addend: 0x0, symName: '-[AppDelegate setDesiredKeyboardBrightness:]', symObjAddr: 0x5D23, symBinAddr: 0x10000B719, symSize: 0xD }
+  - { offset: 0x1122BF, size: 0x8, addend: 0x0, symName: '-[AppDelegate desiredChassisBrightness]', symObjAddr: 0x5D30, symBinAddr: 0x10000B726, symSize: 0xD }
+  - { offset: 0x1122F4, size: 0x8, addend: 0x0, symName: '-[AppDelegate setDesiredChassisBrightness:]', symObjAddr: 0x5D3D, symBinAddr: 0x10000B733, symSize: 0xD }
+  - { offset: 0x112331, size: 0x8, addend: 0x0, symName: '-[AppDelegate effectiveKeyboardBrightness]', symObjAddr: 0x5D4A, symBinAddr: 0x10000B740, symSize: 0xD }
+  - { offset: 0x112366, size: 0x8, addend: 0x0, symName: '-[AppDelegate setEffectiveKeyboardBrightness:]', symObjAddr: 0x5D57, symBinAddr: 0x10000B74D, symSize: 0xD }
+  - { offset: 0x1123A3, size: 0x8, addend: 0x0, symName: '-[AppDelegate effectiveChassisBrightness]', symObjAddr: 0x5D64, symBinAddr: 0x10000B75A, symSize: 0xD }
+  - { offset: 0x1123D8, size: 0x8, addend: 0x0, symName: '-[AppDelegate setEffectiveChassisBrightness:]', symObjAddr: 0x5D71, symBinAddr: 0x10000B767, symSize: 0xD }
+  - { offset: 0x112415, size: 0x8, addend: 0x0, symName: '-[AppDelegate activeProfile]', symObjAddr: 0x5D7E, symBinAddr: 0x10000B774, symSize: 0xD }
+  - { offset: 0x11244A, size: 0x8, addend: 0x0, symName: '-[AppDelegate setActiveProfile:]', symObjAddr: 0x5D8B, symBinAddr: 0x10000B781, symSize: 0xF }
+  - { offset: 0x112489, size: 0x8, addend: 0x0, symName: '-[AppDelegate displaySleeping]', symObjAddr: 0x5D9A, symBinAddr: 0x10000B790, symSize: 0xA }
+  - { offset: 0x1124BE, size: 0x8, addend: 0x0, symName: '-[AppDelegate setDisplaySleeping:]', symObjAddr: 0x5DA4, symBinAddr: 0x10000B79A, symSize: 0x9 }
+  - { offset: 0x1124FB, size: 0x8, addend: 0x0, symName: '-[AppDelegate sessionLocked]', symObjAddr: 0x5DAD, symBinAddr: 0x10000B7A3, symSize: 0xA }
+  - { offset: 0x112530, size: 0x8, addend: 0x0, symName: '-[AppDelegate setSessionLocked:]', symObjAddr: 0x5DB7, symBinAddr: 0x10000B7AD, symSize: 0x9 }
+  - { offset: 0x11256D, size: 0x8, addend: 0x0, symName: '-[AppDelegate computerSleeping]', symObjAddr: 0x5DC0, symBinAddr: 0x10000B7B6, symSize: 0xA }
+  - { offset: 0x1125A2, size: 0x8, addend: 0x0, symName: '-[AppDelegate setComputerSleeping:]', symObjAddr: 0x5DCA, symBinAddr: 0x10000B7C0, symSize: 0x9 }
+  - { offset: 0x1125DF, size: 0x8, addend: 0x0, symName: '-[AppDelegate onBattery]', symObjAddr: 0x5DD3, symBinAddr: 0x10000B7C9, symSize: 0xA }
+  - { offset: 0x112614, size: 0x8, addend: 0x0, symName: '-[AppDelegate setOnBattery:]', symObjAddr: 0x5DDD, symBinAddr: 0x10000B7D3, symSize: 0x9 }
+  - { offset: 0x112651, size: 0x8, addend: 0x0, symName: '-[AppDelegate lastKeyboardWrite]', symObjAddr: 0x5DE6, symBinAddr: 0x10000B7DC, symSize: 0xE }
+  - { offset: 0x112686, size: 0x8, addend: 0x0, symName: '-[AppDelegate setLastKeyboardWrite:]', symObjAddr: 0x5DF4, symBinAddr: 0x10000B7EA, symSize: 0xE }
+  - { offset: 0x1126C3, size: 0x8, addend: 0x0, symName: '-[AppDelegate lastChassisWrite]', symObjAddr: 0x5E02, symBinAddr: 0x10000B7F8, symSize: 0xE }
+  - { offset: 0x1126F8, size: 0x8, addend: 0x0, symName: '-[AppDelegate setLastChassisWrite:]', symObjAddr: 0x5E10, symBinAddr: 0x10000B806, symSize: 0xE }
+  - { offset: 0x112735, size: 0x8, addend: 0x0, symName: '-[AppDelegate pendingKeyboardBrightness]', symObjAddr: 0x5E1E, symBinAddr: 0x10000B814, symSize: 0xD }
+  - { offset: 0x11276A, size: 0x8, addend: 0x0, symName: '-[AppDelegate setPendingKeyboardBrightness:]', symObjAddr: 0x5E2B, symBinAddr: 0x10000B821, symSize: 0xD }
+  - { offset: 0x1127A7, size: 0x8, addend: 0x0, symName: '-[AppDelegate pendingChassisBrightness]', symObjAddr: 0x5E38, symBinAddr: 0x10000B82E, symSize: 0xD }
+  - { offset: 0x1127DC, size: 0x8, addend: 0x0, symName: '-[AppDelegate setPendingChassisBrightness:]', symObjAddr: 0x5E45, symBinAddr: 0x10000B83B, symSize: 0xD }
+  - { offset: 0x112819, size: 0x8, addend: 0x0, symName: '-[AppDelegate keyboardWriteScheduled]', symObjAddr: 0x5E52, symBinAddr: 0x10000B848, symSize: 0xA }
+  - { offset: 0x11284E, size: 0x8, addend: 0x0, symName: '-[AppDelegate setKeyboardWriteScheduled:]', symObjAddr: 0x5E5C, symBinAddr: 0x10000B852, symSize: 0x9 }
+  - { offset: 0x11288B, size: 0x8, addend: 0x0, symName: '-[AppDelegate chassisWriteScheduled]', symObjAddr: 0x5E65, symBinAddr: 0x10000B85B, symSize: 0xA }
+  - { offset: 0x1128C0, size: 0x8, addend: 0x0, symName: '-[AppDelegate setChassisWriteScheduled:]', symObjAddr: 0x5E6F, symBinAddr: 0x10000B865, symSize: 0x9 }
+  - { offset: 0x1128FD, size: 0x8, addend: 0x0, symName: '-[AppDelegate reconnectGeneration]', symObjAddr: 0x5E78, symBinAddr: 0x10000B86E, symSize: 0xD }
+  - { offset: 0x112932, size: 0x8, addend: 0x0, symName: '-[AppDelegate setReconnectGeneration:]', symObjAddr: 0x5E85, symBinAddr: 0x10000B87B, symSize: 0xD }
+  - { offset: 0x11296F, size: 0x8, addend: 0x0, symName: '-[AppDelegate reconnectAttempt]', symObjAddr: 0x5E92, symBinAddr: 0x10000B888, symSize: 0xD }
+  - { offset: 0x1129A4, size: 0x8, addend: 0x0, symName: '-[AppDelegate setReconnectAttempt:]', symObjAddr: 0x5E9F, symBinAddr: 0x10000B895, symSize: 0xD }
+  - { offset: 0x1129E1, size: 0x8, addend: 0x0, symName: '-[AppDelegate powerSourceRunLoopSource]', symObjAddr: 0x5EAC, symBinAddr: 0x10000B8A2, symSize: 0xD }
+  - { offset: 0x112A16, size: 0x8, addend: 0x0, symName: '-[AppDelegate setPowerSourceRunLoopSource:]', symObjAddr: 0x5EB9, symBinAddr: 0x10000B8AF, symSize: 0xD }
+  - { offset: 0x112A53, size: 0x8, addend: 0x0, symName: '-[AppDelegate .cxx_destruct]', symObjAddr: 0x5EC6, symBinAddr: 0x10000B8BC, symSize: 0xC8 }
+  - { offset: 0x112A86, size: 0x8, addend: 0x0, symName: ___AFXHotKeyPressed_block_invoke, symObjAddr: 0x5F8E, symBinAddr: 0x10000B984, symSize: 0x1D }
+  - { offset: 0x112ADD, size: 0x8, addend: 0x0, symName: ___AFXPowerSourceChanged_block_invoke, symObjAddr: 0x5FAB, symBinAddr: 0x10000B9A1, symSize: 0x16 }
+  - { offset: 0x112F4F, size: 0x8, addend: 0x0, symName: '-[ScreenStateObserver init]', symObjAddr: 0x0, symBinAddr: 0x10000B9B7, symSize: 0x165 }
+  - { offset: 0x112FB2, size: 0x8, addend: 0x0, symName: '-[ScreenStateObserver init]', symObjAddr: 0x0, symBinAddr: 0x10000B9B7, symSize: 0x165 }
+  - { offset: 0x113138, size: 0x8, addend: 0x0, symName: '-[ScreenStateObserver dealloc]', symObjAddr: 0x165, symBinAddr: 0x10000BB1C, symSize: 0x9B }
+  - { offset: 0x1131BF, size: 0x8, addend: 0x0, symName: '-[ScreenStateObserver screensDidWake:]', symObjAddr: 0x200, symBinAddr: 0x10000BBB7, symSize: 0x3D }
+  - { offset: 0x113222, size: 0x8, addend: 0x0, symName: '-[ScreenStateObserver screensDidSleep:]', symObjAddr: 0x23D, symBinAddr: 0x10000BBF4, symSize: 0x3D }
+  - { offset: 0x113285, size: 0x8, addend: 0x0, symName: '-[ScreenStateObserver computerSleep:]', symObjAddr: 0x27A, symBinAddr: 0x10000BC31, symSize: 0x3D }
+  - { offset: 0x1132E8, size: 0x8, addend: 0x0, symName: '-[ScreenStateObserver computerWake:]', symObjAddr: 0x2B7, symBinAddr: 0x10000BC6E, symSize: 0x3D }
+  - { offset: 0x11334B, size: 0x8, addend: 0x0, symName: '-[ScreenStateObserver sessionDidLockNotification:]', symObjAddr: 0x2F4, symBinAddr: 0x10000BCAB, symSize: 0x3D }
+  - { offset: 0x1133AE, size: 0x8, addend: 0x0, symName: '-[ScreenStateObserver sessionDidUnlockNotification:]', symObjAddr: 0x331, symBinAddr: 0x10000BCE8, symSize: 0x3D }
+  - { offset: 0x113411, size: 0x8, addend: 0x0, symName: '-[ScreenStateObserver delegate]', symObjAddr: 0x36E, symBinAddr: 0x10000BD25, symSize: 0x16 }
+  - { offset: 0x113448, size: 0x8, addend: 0x0, symName: '-[ScreenStateObserver setDelegate:]', symObjAddr: 0x384, symBinAddr: 0x10000BD3B, symSize: 0x11 }
+  - { offset: 0x113489, size: 0x8, addend: 0x0, symName: '-[ScreenStateObserver .cxx_destruct]', symObjAddr: 0x395, symBinAddr: 0x10000BD4C, symSize: 0xE }
+...

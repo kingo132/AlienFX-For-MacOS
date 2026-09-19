@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7692C58A223F860400F9A6EE /* AlienFxTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlienFxTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7692C58A223F860400F9A6EE /* AlienFX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlienFX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7692C58D223F860400F9A6EE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7692C58E223F860400F9A6EE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7692C590223F860400F9A6EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -55,7 +55,7 @@
 		7692C58B223F860400F9A6EE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7692C58A223F860400F9A6EE /* AlienFxTest.app */,
+				7692C58A223F860400F9A6EE /* AlienFX.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -96,8 +96,8 @@
 			dependencies = (
 			);
 			name = AlienFxTest;
-			productName = AlienFxTest;
-			productReference = 7692C58A223F860400F9A6EE /* AlienFxTest.app */;
+			productName = AlienFX;
+			productReference = 7692C58A223F860400F9A6EE /* AlienFX.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -225,7 +225,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -274,7 +274,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
@@ -290,8 +290,16 @@
 				DEVELOPMENT_TEAM = N99J53F9R6;
 				INFOPLIST_FILE = AlienFxTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = demo.alienfxtest;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				OTHER_LDFLAGS = (
+					"-framework",
+					IOKit,
+					"-framework",
+					ServiceManagement,
+					"-framework",
+					Carbon,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.kingo132.AlienFX;
+				PRODUCT_NAME = AlienFX;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
@@ -306,8 +314,16 @@
 				DEVELOPMENT_TEAM = N99J53F9R6;
 				INFOPLIST_FILE = AlienFxTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = demo.alienfxtest;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				OTHER_LDFLAGS = (
+					"-framework",
+					IOKit,
+					"-framework",
+					ServiceManagement,
+					"-framework",
+					Carbon,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.kingo132.AlienFX;
+				PRODUCT_NAME = AlienFX;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;

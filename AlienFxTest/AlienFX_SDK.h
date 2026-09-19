@@ -251,6 +251,9 @@ namespace AlienFX_SDK
 
 		// get version for current device
 		int GetVersion();
+
+        // true while a matching HID device is available.
+        bool IsConnected();
 	};
 
 }

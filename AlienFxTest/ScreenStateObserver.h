@@ -1,11 +1,3 @@
-//
-//  ScreenStateObserver.h
-//  AutoMute
-//
-//  Created by Zac Cohan on 23/8/19.
-//  Copyright © 2019 Zac Cohan. All rights reserved.
-//
-
 #import <Cocoa/Cocoa.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,6 +8,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)screenDidSleep;
 - (void)computerSleep;
 - (void)computerWake;
+- (void)sessionDidLock;
+- (void)sessionDidUnlock;
 
 @end
 

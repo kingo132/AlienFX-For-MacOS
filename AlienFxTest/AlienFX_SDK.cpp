@@ -1,5 +1,7 @@
 #include "AlienFX_SDK.h"
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 namespace AlienFX_SDK
 {
@@ -109,50 +111,61 @@ namespace AlienFX_SDK
 		return;
 	}
 
-	//Use this method for general devices pid = -1 for full scan
+	// Use this method for general devices, pid = -1 for full scan.
 	int Functions::AlienFXInitialize(int vID, int pID, int rpLen)
 	{
-        managerRef = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
-        IOHIDManagerScheduleWithRunLoop(managerRef, CFRunLoopGetMain(), kCFRunLoopDefaultMode);
-        IOReturn ret = IOHIDManagerOpen(managerRef, 0L);
-        if (ret != kIOReturnSuccess) {
-            //NSLog(@"打开设备失败!");
-            return -1;
-        } else {
-            //NSLog(@"打开设备成功!");
-        }
-        
+        // Re-initialization is common after sleep/wake. Always tear down an
+        // earlier manager first so callbacks and run-loop sources do not pile up.
+        AlienFXClose();
+
         devHandle = NULL;
-        afxMap = NULL;
         vid = vID;
         pid = pID;
         length = rpLen;
-        
-        CFStringRef keys[2];
-        CFStringRef values[2];
-        CFNumberRef vendorID = CFNumberCreate( kCFAllocatorDefault, kCFNumberIntType, &vid );
-        CFNumberRef productID = CFNumberCreate( kCFAllocatorDefault, kCFNumberIntType, &pid );
-        keys[0] = CFSTR( kIOHIDVendorIDKey );  values[0] = (CFStringRef) vendorID;
-        keys[1] = CFSTR( kIOHIDProductIDKey ); values[1] = (CFStringRef) productID;
-        CFDictionaryRef dict = CFDictionaryCreate( kCFAllocatorDefault, (const void **) &keys, (const void **) &values, 1, NULL, NULL);
+
+        managerRef = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
+        if (!managerRef) {
+            return -1;
+        }
+
+        CFNumberRef vendorID = CFNumberCreate(kCFAllocatorDefault, kCFNumberIntType, &vid);
+        CFNumberRef productID = CFNumberCreate(kCFAllocatorDefault, kCFNumberIntType, &pid);
+        const void *keys[2] = { CFSTR(kIOHIDVendorIDKey), CFSTR(kIOHIDProductIDKey) };
+        const void *values[2] = { vendorID, productID };
+        CFDictionaryRef dict = CFDictionaryCreate(kCFAllocatorDefault,
+                                                   keys, values, 2,
+                                                   &kCFTypeDictionaryKeyCallBacks,
+                                                   &kCFTypeDictionaryValueCallBacks);
         IOHIDManagerSetDeviceMatching(managerRef, dict);
-        
         IOHIDManagerRegisterDeviceMatchingCallback(managerRef, &HandleDeviceMatchingCallback, this);
         IOHIDManagerRegisterDeviceRemovalCallback(managerRef, &HandleDeviceRemovalCallback, this);
-        
+        IOHIDManagerScheduleWithRunLoop(managerRef, CFRunLoopGetMain(), kCFRunLoopDefaultMode);
+
+        IOReturn ret = IOHIDManagerOpen(managerRef, kIOHIDOptionsTypeNone);
+
+        if (dict) CFRelease(dict);
+        if (vendorID) CFRelease(vendorID);
+        if (productID) CFRelease(productID);
+
+        if (ret != kIOReturnSuccess) {
+            AlienFXClose();
+            return -1;
+        }
+
         CFSetRef allDevices = IOHIDManagerCopyDevices(managerRef);
-        CFIndex size = CFSetGetCount(allDevices);
-        if (size > 0) {
-            IOHIDDeviceRef array[size]; // array of IOHIDDeviceRef
-            CFSetGetValues(allDevices, (const void **)array);
-            // 拿第一个
-            devHandle = array[0];
-        } else {
+        if (!allDevices || CFSetGetCount(allDevices) == 0) {
+            if (allDevices) CFRelease(allDevices);
+            AlienFXClose();
             return -2;
         }
-        
+
+        CFIndex size = CFSetGetCount(allDevices);
+        std::vector<IOHIDDeviceRef> devices((size_t)size);
+        CFSetGetValues(allDevices, (const void **)devices.data());
+        devHandle = devices.front();
+        CFRelease(allDevices);
+
         afxMap = new Mappings();
-        
         return 0;
 	}
 
@@ -193,17 +206,15 @@ namespace AlienFX_SDK
     }
 
     void Functions::HandleDeviceMatchingCallback(void * context, IOReturn result, void * sender, IOHIDDeviceRef sdevice) {
-        Functions* fun = (Functions*)sender;
-        if (fun) {
+        Functions* fun = static_cast<Functions*>(context);
+        if (fun && result == kIOReturnSuccess) {
             fun->devHandle = sdevice;
-            char *inputbuffer = (char*)malloc(64);
-            IOHIDDeviceRegisterInputReportCallback(fun->devHandle, (uint8_t*)inputbuffer, 64, HidInputCallback, NULL);
         }
     }
 
     void Functions::HandleDeviceRemovalCallback(void * context, IOReturn result, void * sender, IOHIDDeviceRef sdevice) {
-        Functions* fun = (Functions*)sender;
-        if (fun) {
+        Functions* fun = static_cast<Functions*>(context);
+        if (fun && fun->devHandle == sdevice) {
             fun->devHandle = NULL;
         }
     }
@@ -233,8 +244,6 @@ namespace AlienFX_SDK
             //NSLog(@"发送数据失败!");
             return false;
         }
-        //NSLog(@"发送数据成功!");
-        printf("send succ %x:%x:%x:%x:%x:%x:%x:%x:%x:%x, len: %lu\n", data_to_send[0], data_to_send[1], data_to_send[2], data_to_send[3], data_to_send[4], data_to_send[5], data_to_send[6], data_to_send[7], data_to_send[8], data_to_send[9], length_to_send);
         return true;
     }
 
@@ -263,8 +272,6 @@ namespace AlienFX_SDK
             //NSLog(@"发送数据失败!");
             return false;
         }
-        //NSLog(@"发送数据成功!");
-        printf("send succ %x:%x:%x:%x:%x:%x:%x:%x:%x:%x, len: %lu\n", data_to_send[0], data_to_send[1], data_to_send[2], data_to_send[3], data_to_send[4], data_to_send[5], data_to_send[6], data_to_send[7], data_to_send[8], data_to_send[9], length_to_send);
         return true;
     }
 
@@ -389,7 +396,7 @@ namespace AlienFX_SDK
 			}
 			//std::cout << "Update!" << std::endl;
 			inSet = false;
-			sleep(5); // Fix for ultra-fast updates, or next command will fail sometimes.
+			std::this_thread::sleep_for(std::chrono::milliseconds(5)); // Hardware settle time.
 			return res;
 		//}
 		//return false;
@@ -777,8 +784,8 @@ namespace AlienFX_SDK
 			buffer[4] = 6;
 			HidDSetOutputReport(buffer, length);
 			BYTE res = 0;
-			while ((res = IsDeviceReady()) && res != 255) sleep(50);
-			while (!IsDeviceReady()) sleep(100);
+			while ((res = IsDeviceReady()) && res != 255) std::this_thread::sleep_for(std::chrono::milliseconds(50));
+			while (!IsDeviceReady()) std::this_thread::sleep_for(std::chrono::milliseconds(100));
 			Reset();
 			inSet = false;
 		} break;
@@ -943,7 +950,7 @@ namespace AlienFX_SDK
 	}
 
 	bool Functions::ToggleState(BYTE brightness, vector<mapping>* mappings, bool power) {
-        if (! mappings) {
+        if (!mappings && afxMap) {
             mappings = afxMap->GetMappings();
         }
         
@@ -1117,7 +1124,7 @@ namespace AlienFX_SDK
 		{
 			if (status == ALIENFX_V2_RESET)
 				return status;
-			sleep(50);
+			std::this_thread::sleep_for(std::chrono::milliseconds(50));
 		}
 		return status;
 	}
@@ -1130,7 +1137,7 @@ namespace AlienFX_SDK
 		{
 			if (status == ALIENFX_V2_RESET)
 				return status;
-			sleep(50);
+			std::this_thread::sleep_for(std::chrono::milliseconds(50));
 		}
 		return status;
 	}
@@ -1165,31 +1172,26 @@ namespace AlienFX_SDK
 
 	bool Functions::AlienFXClose()
 	{
-		bool result = true;
-		if (devHandle != NULL) {
-            IOReturn ret = IOHIDDeviceClose(devHandle, 0L);
-            if (ret == kIOReturnSuccess) {
-                devHandle = nil;
-            } else {
+        bool result = true;
+        devHandle = NULL;
+
+        if (managerRef) {
+            IOHIDManagerUnscheduleFromRunLoop(managerRef, CFRunLoopGetMain(), kCFRunLoopDefaultMode);
+            IOReturn ret = IOHIDManagerClose(managerRef, kIOHIDOptionsTypeNone);
+            if (ret != kIOReturnSuccess && ret != kIOReturnNotOpen) {
                 result = false;
             }
-		}
-        
-        if (managerRef) {
-            //IOReturn ret = IOHIDManagerClose(managerRef, 0L);
-            //if (ret == kIOReturnSuccess) {
-                managerRef = nil;
-            //} else {
-            //    result = false;
-            //}
+            CFRelease(managerRef);
+            managerRef = NULL;
         }
-        
+
         if (afxMap) {
             delete afxMap;
             afxMap = NULL;
         }
 
-		return result;
+        inSet = false;
+        return result;
 	}
 
     Mappings::~Mappings () {
@@ -1557,6 +1559,11 @@ namespace AlienFX_SDK
 	{
 		return &devices;
 	}
+
+    bool Functions::IsConnected()
+    {
+        return devHandle != NULL;
+    }
 
 	int Functions::GetPID()
 	{
