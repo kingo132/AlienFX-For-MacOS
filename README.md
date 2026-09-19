@@ -1,5 +1,7 @@
 # AlienFX for macOS v1.0 — Area-51m R2 Daily Driver
 
+<img width="367" height="432" alt="image" src="https://github.com/user-attachments/assets/ff6c90e8-447c-45de-955d-7f5c270efd86" />
+
 A lightweight macOS menu-bar controller for the Alienware Area-51m R2.
 
 This build is intentionally designed around one rule:
