@@ -225,6 +225,11 @@ namespace AlienFX_SDK
 		bool SetPowerAction(int index, BYTE Red, BYTE Green, BYTE Blue, BYTE Red2, BYTE Green2, BYTE Blue2,
 							int size=0, UCHAR* lights=nullptr, std::vector<vector<afx_act>>* act=nullptr);
 
+		// Set brightness for a selected list of light IDs.
+		// Currently used by API v4 chassis devices so the power-button light can
+		// be managed independently from the other chassis zones.
+		bool SetBrightnessForLights(BYTE brightness, const UCHAR* lights, int numLights);
+
 		// Hardware enable/disable lights
 		// newState - on/off
 		// mappings - needed to keep some lights on

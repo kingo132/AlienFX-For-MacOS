@@ -949,6 +949,27 @@ namespace AlienFX_SDK
 		return true;
 	}
 
+	bool Functions::SetBrightnessForLights(BYTE brightness, const UCHAR* lights, int numLights) {
+        if (length != API_L_V4 || !lights || numLights <= 0 || numLights > (length - 6)) {
+            return false;
+        }
+
+        byte buffer[MAX_BUFFERSIZE] = {0};
+        memcpy(buffer, COMMV4.prepareTurn, sizeof(COMMV4.prepareTurn));
+        if (!HidDSetOutputReport(buffer, length)) {
+            return false;
+        }
+
+        ZeroMemory(buffer, length);
+        memcpy(buffer, COMMV4.turnOn, sizeof(COMMV4.turnOn));
+        buffer[3] = 0x64 - (((UINT)brightness) * 0x64 / 0xff); // 00..64
+        buffer[5] = (byte)numLights;
+        for (int i = 0; i < numLights; ++i) {
+            buffer[6 + i] = lights[i];
+        }
+        return HidDSetOutputReport(buffer, length);
+    }
+
 	bool Functions::ToggleState(BYTE brightness, vector<mapping>* mappings, bool power) {
         if (!mappings && afxMap) {
             mappings = afxMap->GetMappings();
@@ -958,17 +979,13 @@ namespace AlienFX_SDK
 		switch (length) {
 		case API_L_V5:
 		{
-			//if (inSet) { // not sure... Maybe reset mandatory.
-			//	UpdateColors();
-			//	Reset();
-			//}
 			memcpy(buffer, COMMV5.turnOnInit, sizeof(COMMV5.turnOnInit));
-            if (! HidDSetFeature(buffer, length)) {
+            if (!HidDSetFeature(buffer, length)) {
                 return false;
             }
 			ZeroMemory(buffer, length);
 			memcpy(buffer, COMMV5.turnOnInit2, sizeof(COMMV5.turnOnInit2));
-            if (! HidDSetFeature(buffer, length)) {
+            if (!HidDSetFeature(buffer, length)) {
                 return false;
             }
 			ZeroMemory(buffer, length);
@@ -978,32 +995,12 @@ namespace AlienFX_SDK
 		} break;
 		case API_L_V4:
 		{
-			//if (inSet) UpdateColors();
-			memcpy(buffer, COMMV4.prepareTurn, sizeof(COMMV4.prepareTurn));
-            if (! HidDSetOutputReport(buffer, length)) {
-                return false;
-            }
-			ZeroMemory(buffer, length);
-			memcpy(buffer, COMMV4.turnOn, sizeof(COMMV4.turnOn));
-			buffer[3] = 0x64 - (((UINT)brightness) * 0x64 / 0xff); // 00..64
-            buffer[5] = 6;
-            buffer[6] = 0;
-            buffer[7] = 1;
-            buffer[8] = 2;
-            buffer[9] = 3;
-            buffer[10] = 4;
-            buffer[11] = 5;
-			/*byte pos = 6, pindex = 0;
-			for (int i = 0; i < mappings->size(); i++) {
-				mapping cur = mappings->at(i);
-				if (cur.devid == pid && pos < length)
-					if (!cur.flags || power) {
-						buffer[pos] = (byte)cur.lightid;
-						pos++; pindex++;
-					}
-			}
-			buffer[5] = pindex;*/
-			return HidDSetOutputReport(buffer, length);
+            // Area-51m R2 chassis IDs from the upstream AlienFX mapping:
+            // 0 Alien Head, 1 Touchpad, 2 Power Button, 3 Ring Top, 4 Ring Bottom.
+            // Keep this default path equivalent to "all chassis lights" while
+            // allowing the bridge to target the power button independently.
+            const UCHAR allChassisLights[] = {0, 1, 2, 3, 4};
+            return SetBrightnessForLights(brightness, allChassisLights, 5);
 		} break;
 		case API_L_V3: case API_L_V1: case API_L_V2:
 		{

@@ -30,6 +30,16 @@
 - (BOOL)setKeyboardBrightness:(uint8_t)brightness;
 - (BOOL)setChassisBrightness:(uint8_t)brightness;
 
+/// Screen-off / lock policy for Area-51m R2. Non-power chassis zones are
+/// turned off while the power-button Alien head remains dimly lit so firmware
+/// can continue to use it as the sleep indicator.
+- (BOOL)setChassisSleepStateWithPowerBrightness:(uint8_t)powerBrightness;
+
+/// Re-assert only the Area-51m R2 power-button light (API v4 light ID 2).
+/// Used after wake to recover from firmware/USB races that occasionally leave
+/// the power light dark.
+- (BOOL)setPowerButtonBrightness:(uint8_t)brightness;
+
 @end
 
 #endif /* AlienFX_Bridge_hpp */

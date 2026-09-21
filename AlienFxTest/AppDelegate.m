@@ -5,11 +5,22 @@
 #import <IOKit/ps/IOPowerSources.h>
 #import <IOKit/ps/IOPSKeys.h>
 #import <Carbon/Carbon.h>
+#import <ApplicationServices/ApplicationServices.h>
 @import ServiceManagement;
 
 static const NSTimeInterval kHIDWriteInterval = 0.080; // 12.5 Hz max while dragging.
 static const NSInteger kMenuWidth = 360;
 static const NSInteger kBrightnessStep = 10;
+static const NSTimeInterval kTouchGuardDefaultInterval = 1.0;
+static NSString * const kTouchGuardIntervalKey = @"TouchGuardInterval";
+
+static NSArray<NSNumber *> *AFXTouchGuardIntervals(void)
+{
+    return @[@0.3, @0.5, @0.8, @1.0];
+}
+static NSString * const kTouchGuardEnabledKey = @"TouchGuardEnabled";
+static NSString * const kTouchGuardExplainedKey = @"TouchGuardPermissionsExplained";
+static const NSInteger kSleepPowerIndicatorBrightness = 10;
 static const OSType kAFXHotKeySignature = 'AFXK';
 static const UInt32 kAFXHotKeyBrightnessDown = 1;
 static const UInt32 kAFXHotKeyBrightnessUp = 2;
@@ -160,6 +171,15 @@ static NSString * const kProfileCustom = @"Custom";
 @property (nonatomic, strong) NSMenuItem *batteryProfileDescriptionItem;
 @property (nonatomic, strong) NSMenuItem *launchAtLoginItem;
 @property (nonatomic, strong) NSMenuItem *diagnosticsItem;
+@property (nonatomic, strong) NSMenuItem *touchGuardItem;
+@property (nonatomic, strong) NSMenu *touchGuardDelayMenu;
+@property (nonatomic) NSTimeInterval touchGuardInterval;
+// Owned CF objects; created, used and destroyed on the main run loop.
+@property (nonatomic) CFMachPortRef touchGuardTap;
+@property (nonatomic) CFRunLoopSourceRef touchGuardSource;
+@property (nonatomic) BOOL touchGuardRequested;
+@property (nonatomic) NSTimeInterval touchGuardDeadline;
+@property (nonatomic) NSUInteger touchGuardRecoveryCount;
 
 @property (nonatomic) EventHotKeyRef brightnessDownHotKey;
 @property (nonatomic) EventHotKeyRef brightnessUpHotKey;
@@ -185,6 +205,7 @@ static NSString * const kProfileCustom = @"Custom";
 
 @property (nonatomic) NSUInteger reconnectGeneration;
 @property (nonatomic) NSInteger reconnectAttempt;
+@property (nonatomic) NSUInteger powerButtonRestoreGeneration;
 @property (nonatomic) CFRunLoopSourceRef powerSourceRunLoopSource;
 
 - (void)powerSourceDidChange;
@@ -193,6 +214,10 @@ static NSString * const kProfileCustom = @"Custom";
 - (void)unregisterGlobalHotKeys;
 - (BOOL)isRunningFromApplicationsFolder;
 - (NSString *)launchAtLoginStatusText;
+- (void)schedulePowerButtonRestoreAfterWake;
+- (void)startTouchGuardIfPossible;
+- (void)stopTouchGuard;
+- (NSString *)touchGuardStatusText;
 
 @end
 
@@ -234,6 +259,33 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
     return noErr;
 }
 
+// Independently implemented from the requested behavior; no TouchGuard source used.
+static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType type,
+                                           CGEventRef event, void *context)
+{
+    AppDelegate *delegate = (__bridge AppDelegate *)context;
+    // These are notification types, not bit positions for the event mask.
+    if (type == kCGEventTapDisabledByTimeout || type == kCGEventTapDisabledByUserInput) {
+        if (delegate.touchGuardRequested && delegate.touchGuardTap) {
+            CGEventTapEnable(delegate.touchGuardTap, true);
+            delegate.touchGuardRecoveryCount++;
+        }
+        return event;
+    }
+    if (!delegate.touchGuardRequested) return event;
+
+    // Uptime is monotonic: changing the wall clock cannot prolong protection.
+    NSTimeInterval now = NSProcessInfo.processInfo.systemUptime;
+    if (type == kCGEventKeyDown || type == kCGEventKeyUp) {
+        delegate.touchGuardDeadline = now + delegate.touchGuardInterval;
+    } else if (now < delegate.touchGuardDeadline &&
+               (type == kCGEventLeftMouseDown || type == kCGEventLeftMouseUp ||
+                type == kCGEventRightMouseDown || type == kCGEventRightMouseUp)) {
+        return NULL;
+    }
+    return event;
+}
+
 @implementation AppDelegate
 
 #pragma mark Lifecycle
@@ -242,6 +294,10 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
 {
     [self registerDefaults];
     [self loadSavedState];
+    self.touchGuardRequested = [NSUserDefaults.standardUserDefaults boolForKey:kTouchGuardEnabledKey];
+    NSTimeInterval savedInterval = [NSUserDefaults.standardUserDefaults doubleForKey:kTouchGuardIntervalKey];
+    self.touchGuardInterval = [AFXTouchGuardIntervals() containsObject:@(savedInterval)]
+        ? savedInterval : kTouchGuardDefaultInterval;
 
     self.screenObserver = [ScreenStateObserver new];
     self.screenObserver.delegate = self;
@@ -257,6 +313,7 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
 
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
+    [self stopTouchGuard];
     [self unregisterGlobalHotKeys];
     self.reconnectGeneration++;
     if (self.powerSourceRunLoopSource) {
@@ -272,6 +329,8 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
 - (void)registerDefaults
 {
     NSDictionary *defaults = @{
+        kTouchGuardEnabledKey: @NO,
+        kTouchGuardIntervalKey: @(kTouchGuardDefaultInterval),
         kKeyboardBrightnessKey: @35,
         kChassisBrightnessKey: @50,
         kActiveProfileKey: kProfileCustom,
@@ -400,6 +459,28 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
     [self.statusMenu addItem:profilesItem];
 
     self.automationMenu = [[NSMenu alloc] initWithTitle:@"Automation"];
+
+    self.touchGuardItem = [[NSMenuItem alloc] initWithTitle:@"Touch Guard · 1.0 s"
+                                                  action:@selector(toggleTouchGuard:)
+                                           keyEquivalent:@""];
+    self.touchGuardItem.target = self;
+    [self.automationMenu addItem:self.touchGuardItem];
+    self.touchGuardDelayMenu = [[NSMenu alloc] initWithTitle:@"Touch Guard Delay"];
+    NSArray<NSString *> *delayLabels = @[@"0.3 s · Quick", @"0.5 s · Recommended starting point",
+                                         @"0.8 s · Longer protection", @"1.0 s · Maximum protection (default)"];
+    NSArray<NSNumber *> *intervals = AFXTouchGuardIntervals();
+    for (NSUInteger i = 0; i < intervals.count; ++i) {
+        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:delayLabels[i]
+                                                   action:@selector(selectTouchGuardInterval:)
+                                            keyEquivalent:@""];
+        item.target = self;
+        item.representedObject = intervals[i];
+        [self.touchGuardDelayMenu addItem:item];
+    }
+    NSMenuItem *delayItem = [[NSMenuItem alloc] initWithTitle:@"Touch Guard Delay" action:nil keyEquivalent:@""];
+    delayItem.submenu = self.touchGuardDelayMenu;
+    [self.automationMenu addItem:delayItem];
+    [self.automationMenu addItem:NSMenuItem.separatorItem];
 
     self.offWithDisplayItem = [[NSMenuItem alloc] initWithTitle:@"Turn lights off with display"
                                                          action:@selector(toggleOffWithDisplay:)
@@ -603,7 +684,16 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
         [self sendKeyboardBrightnessThrottled:keyboard immediate:immediate];
     }
     if ([bridge chassisConnected]) {
-        [self sendChassisBrightnessThrottled:chassis immediate:immediate];
+        if ([self shouldForceLightsOff]) {
+            // During display-off/lock we intentionally do not send 0 to the
+            // power-button Alien head. Keeping it dim allows the firmware's
+            // sleep blink to remain visible instead of looking powered off.
+            if (immediate) {
+                [bridge setChassisSleepStateWithPowerBrightness:(uint8_t)kSleepPowerIndicatorBrightness];
+            }
+        } else {
+            [self sendChassisBrightnessThrottled:chassis immediate:immediate];
+        }
     }
 
     if (!self.computerSleeping && (![bridge keyboardConnected] || ![bridge chassisConnected])) {
@@ -641,6 +731,107 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
     self.activeProfile = profile;
     [self persistDesiredState];
     [self refreshMenuState];
+}
+
+#pragma mark Touch Guard
+
+- (void)startTouchGuardIfPossible
+{
+    if (!self.touchGuardRequested) return;
+    // Permission checks and UI stay outside the event callback.
+    if (!AXIsProcessTrusted() || !CGPreflightListenEventAccess()) {
+        [self stopTouchGuard];
+        return;
+    }
+    if (self.touchGuardTap && CFMachPortIsValid(self.touchGuardTap)) {
+        if (!CGEventTapIsEnabled(self.touchGuardTap)) {
+            CGEventTapEnable(self.touchGuardTap, true);
+        }
+        return;
+    }
+    [self stopTouchGuard];
+    CGEventMask mask = CGEventMaskBit(kCGEventKeyDown) | CGEventMaskBit(kCGEventKeyUp) |
+        CGEventMaskBit(kCGEventLeftMouseDown) | CGEventMaskBit(kCGEventLeftMouseUp) |
+        CGEventMaskBit(kCGEventRightMouseDown) | CGEventMaskBit(kCGEventRightMouseUp);
+    self.touchGuardTap = CGEventTapCreate(kCGSessionEventTap, kCGHeadInsertEventTap,
+                                         kCGEventTapOptionDefault, mask,
+                                         AFXTouchGuardEventCallback, (__bridge void *)self);
+    if (!self.touchGuardTap) return;
+    self.touchGuardSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, self.touchGuardTap, 0);
+    if (!self.touchGuardSource) {
+        [self stopTouchGuard];
+        return;
+    }
+    // Common modes keep protection active while menus are tracking.
+    CFRunLoopAddSource(CFRunLoopGetMain(), self.touchGuardSource, kCFRunLoopCommonModes);
+    CGEventTapEnable(self.touchGuardTap, true);
+}
+
+- (void)stopTouchGuard
+{
+    if (self.touchGuardTap) {
+        CGEventTapEnable(self.touchGuardTap, false);
+        CFMachPortInvalidate(self.touchGuardTap);
+    }
+    if (self.touchGuardSource) {
+        CFRunLoopRemoveSource(CFRunLoopGetMain(), self.touchGuardSource, kCFRunLoopCommonModes);
+        CFRunLoopSourceInvalidate(self.touchGuardSource);
+        CFRelease(self.touchGuardSource);
+        self.touchGuardSource = NULL;
+    }
+    if (self.touchGuardTap) {
+        CFRelease(self.touchGuardTap);
+        self.touchGuardTap = NULL;
+    }
+    self.touchGuardDeadline = 0;
+}
+
+- (NSString *)touchGuardStatusText
+{
+    if (!self.touchGuardRequested) return @"Off";
+    if (!AXIsProcessTrusted() || !CGPreflightListenEventAccess()) return @"Waiting for permissions";
+    if (!self.touchGuardTap || !CFMachPortIsValid(self.touchGuardTap)) return @"Event tap unavailable";
+    return CGEventTapIsEnabled(self.touchGuardTap) ? @"Active" : @"Event tap disabled";
+}
+
+- (void)selectTouchGuardInterval:(NSMenuItem *)sender
+{
+    NSNumber *interval = sender.representedObject;
+    if (![AFXTouchGuardIntervals() containsObject:interval]) return;
+    self.touchGuardInterval = interval.doubleValue;
+    [NSUserDefaults.standardUserDefaults setDouble:self.touchGuardInterval forKey:kTouchGuardIntervalKey];
+    // Apply to subsequent keyboard events; do not leave an old protection window active.
+    self.touchGuardDeadline = 0;
+    [self refreshAutomationMenu];
+}
+
+- (void)toggleTouchGuard:(id)sender
+{
+    self.touchGuardRequested = !self.touchGuardRequested;
+    NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+    [defaults setBool:self.touchGuardRequested forKey:kTouchGuardEnabledKey];
+    if (!self.touchGuardRequested) {
+        [self stopTouchGuard];
+    } else {
+        BOOL needsPermissions = !AXIsProcessTrusted() || !CGPreflightListenEventAccess();
+        if (![defaults boolForKey:kTouchGuardExplainedKey] || needsPermissions) {
+            [defaults setBool:YES forKey:kTouchGuardExplainedKey];
+            NSAlert *alert = [NSAlert new];
+            alert.messageText = @"Enable Touch Guard";
+            alert.informativeText = [NSString stringWithFormat:@"Allow AlienFX in System Settings → Privacy & Security → Accessibility and Input Monitoring. Touch Guard observes key presses/releases without recording their content, and blocks left/right clicks from both trackpad and mouse for %.1f seconds after each key event. Movement and scrolling remain available. After granting access, reopen the AlienFX menu; if macOS requests it, quit and reopen AlienFX.", self.touchGuardInterval];
+            [alert addButtonWithTitle:needsPermissions ? @"Request Permissions" : @"OK"];
+            if (needsPermissions) [alert addButtonWithTitle:@"Later"];
+            [NSApp activateIgnoringOtherApps:YES];
+            if ([alert runModal] == NSAlertFirstButtonReturn && needsPermissions) {
+                AXIsProcessTrustedWithOptions((__bridge CFDictionaryRef)@{
+                    (__bridge NSString *)kAXTrustedCheckOptionPrompt: @YES
+                });
+                CGRequestListenEventAccess();
+            }
+        }
+        [self startTouchGuardIfPossible];
+    }
+    [self refreshAutomationMenu];
 }
 
 #pragma mark Automation actions
@@ -840,6 +1031,7 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
 - (void)screenDidSleep
 {
     self.displaySleeping = YES;
+    self.powerButtonRestoreGeneration++;
     [self applyEffectiveBrightnessImmediate:YES];
 }
 
@@ -847,11 +1039,13 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
 {
     self.displaySleeping = NO;
     [self applyEffectiveBrightnessImmediate:YES];
+    [self schedulePowerButtonRestoreAfterWake];
 }
 
 - (void)sessionDidLock
 {
     self.sessionLocked = YES;
+    self.powerButtonRestoreGeneration++;
     [self applyEffectiveBrightnessImmediate:YES];
 }
 
@@ -859,13 +1053,26 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
 {
     self.sessionLocked = NO;
     [self applyEffectiveBrightnessImmediate:YES];
+    [self schedulePowerButtonRestoreAfterWake];
 }
 
 - (void)computerSleep
 {
+    // Make the last chassis command before releasing HID resources explicitly
+    // keep the power-button Alien head on at a low level. This avoids leaving
+    // the firmware in an "off" state that suppresses the normal sleep blink.
+    AlienFX_Bridge *bridge = AlienFX_Bridge.sharedManager;
+    if ([bridge keyboardConnected]) {
+        [bridge setKeyboardBrightness:0];
+    }
+    if ([bridge chassisConnected]) {
+        [bridge setChassisSleepStateWithPowerBrightness:(uint8_t)kSleepPowerIndicatorBrightness];
+    }
+
     self.computerSleeping = YES;
     self.reconnectGeneration++;
-    [[AlienFX_Bridge sharedManager] uninitAlienFx];
+    self.powerButtonRestoreGeneration++;
+    [bridge uninitAlienFx];
     [self updateHeader];
 }
 
@@ -873,6 +1080,36 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
 {
     self.computerSleeping = NO;
     [self scheduleReconnectStartingAtAttempt:0 delay:1.0];
+}
+
+- (void)schedulePowerButtonRestoreAfterWake
+{
+    if (self.computerSleeping || [self shouldForceLightsOff]) return;
+
+    NSUInteger generation = ++self.powerButtonRestoreGeneration;
+    const NSTimeInterval delays[] = {0.75, 2.0};
+    for (NSInteger i = 0; i < 2; ++i) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delays[i] * NSEC_PER_SEC)),
+                       dispatch_get_main_queue(), ^{
+            if (generation != self.powerButtonRestoreGeneration ||
+                self.computerSleeping ||
+                [self shouldForceLightsOff]) {
+                return;
+            }
+
+            AlienFX_Bridge *bridge = AlienFX_Bridge.sharedManager;
+            if (![bridge chassisConnected]) return;
+
+            // Use the currently effective chassis brightness. A delayed,
+            // power-button-only re-assertion fixes the occasional wake race
+            // where firmware leaves this light dark after the rest of the
+            // chassis has already recovered.
+            NSInteger powerBrightness = MAX(0, MIN(100, self.effectiveChassisBrightness));
+            if (powerBrightness > 0) {
+                [bridge setPowerButtonBrightness:(uint8_t)powerBrightness];
+            }
+        });
+    }
 }
 
 #pragma mark Reconnect
@@ -905,6 +1142,9 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
     if ([bridge keyboardConnected] && [bridge chassisConnected]) {
         self.reconnectAttempt = attempt;
         [self applyEffectiveBrightnessImmediate:YES];
+        if (![self shouldForceLightsOff]) {
+            [self schedulePowerButtonRestoreAfterWake];
+        }
         return;
     }
 
@@ -943,6 +1183,16 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
 
 - (void)refreshAutomationMenu
 {
+    [self startTouchGuardIfPossible];
+    self.touchGuardItem.state = self.touchGuardRequested ? NSControlStateValueOn : NSControlStateValueOff;
+    for (NSMenuItem *item in self.touchGuardDelayMenu.itemArray) {
+        item.state = [item.representedObject isEqual:@(self.touchGuardInterval)]
+            ? NSControlStateValueOn : NSControlStateValueOff;
+    }
+    NSString *touchGuardStatus = [self touchGuardStatusText];
+    self.touchGuardItem.title = self.touchGuardRequested && ![touchGuardStatus isEqualToString:@"Active"]
+        ? [NSString stringWithFormat:@"Touch Guard · %.1f s (%@)", self.touchGuardInterval, touchGuardStatus]
+        : [NSString stringWithFormat:@"Touch Guard · %.1f s", self.touchGuardInterval];
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     self.offWithDisplayItem.state = [defaults boolForKey:kOffWithDisplayKey] ? NSControlStateValueOn : NSControlStateValueOff;
     self.offWhileLockedItem.state = [defaults boolForKey:kOffWhileLockedKey] ? NSControlStateValueOn : NSControlStateValueOff;
@@ -978,7 +1228,8 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
     NSMutableArray<NSString *> *parts = [NSMutableArray array];
     [parts addObject:[NSString stringWithFormat:@"%@", self.activeProfile ?: kProfileCustom]];
     if ([self shouldForceLightsOff]) {
-        [parts addObject:@"temporarily off"];
+        [parts addObject:[NSString stringWithFormat:@"lights off · sleep indicator %ld%%",
+                          (long)kSleepPowerIndicatorBrightness]];
     } else if (self.onBattery && [NSUserDefaults.standardUserDefaults boolForKey:kBatteryProfileEnabledKey]) {
         [parts addObject:[NSString stringWithFormat:@"battery %ld%% / %ld%%",
                           (long)self.effectiveKeyboardBrightness, (long)self.effectiveChassisBrightness]];
@@ -1013,7 +1264,9 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
          "Effective keyboard brightness: %ld%%\n"
          "Effective chassis brightness: %ld%%\n"
          "Brightness preview: live, HID writes throttled to %.0f ms\n"
-         "Active profile: %@\n\n"
+         "Active profile: %@\n"
+         "Sleep indicator: power-button Alien head %ld%%; other chassis zones 0%%\n"
+         "Sleep indicator policy: preserved for firmware sleep blinking\n\n"
          "Display sleeping: %@\n"
          "Session locked: %@\n"
          "Computer sleeping: %@\n"
@@ -1022,6 +1275,9 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
          "Off with display: %@\n"
          "Off while locked: %@\n"
          "Launch at Login: %@\n"
+         "Touch Guard: %@ · %.1f s (requested: %@)\n"
+         "Touch Guard permissions: Accessibility=%@; Input Monitoring=%@\n"
+         "Touch Guard tap recoveries: %lu\n"
          "Global keyboard shortcuts: %@ · Ctrl+Option+F5 / Ctrl+Option+F6 (−/+ %ld%%)\n"
          "Reconnect attempt: %ld\n",
         version,
@@ -1033,6 +1289,7 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
         (long)self.effectiveChassisBrightness,
         kHIDWriteInterval * 1000.0,
         self.activeProfile ?: kProfileCustom,
+        (long)kSleepPowerIndicatorBrightness,
         self.displaySleeping ? @"yes" : @"no",
         self.sessionLocked ? @"yes" : @"no",
         self.computerSleeping ? @"yes" : @"no",
@@ -1043,6 +1300,11 @@ static OSStatus AFXHotKeyPressed(EventHandlerCallRef nextHandler, EventRef event
         [defaults boolForKey:kOffWithDisplayKey] ? @"enabled" : @"disabled",
         [defaults boolForKey:kOffWhileLockedKey] ? @"enabled" : @"disabled",
         loginText,
+        [self touchGuardStatusText], self.touchGuardInterval,
+        self.touchGuardRequested ? @"on" : @"off",
+        AXIsProcessTrusted() ? @"granted" : @"not granted",
+        CGPreflightListenEventAccess() ? @"granted" : @"not granted",
+        (unsigned long)self.touchGuardRecoveryCount,
         (self.brightnessDownHotKey && self.brightnessUpHotKey) ? @"registered" : @"unavailable",
         (long)kBrightnessStep,
         (long)self.reconnectAttempt];

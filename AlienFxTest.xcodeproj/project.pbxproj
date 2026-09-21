@@ -297,6 +297,8 @@
 					ServiceManagement,
 					"-framework",
 					Carbon,
+					"-framework",
+					ApplicationServices,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kingo132.AlienFX;
 				PRODUCT_NAME = AlienFX;
@@ -321,6 +323,8 @@
 					ServiceManagement,
 					"-framework",
 					Carbon,
+					"-framework",
+					ApplicationServices,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kingo132.AlienFX;
 				PRODUCT_NAME = AlienFX;
