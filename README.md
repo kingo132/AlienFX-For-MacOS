@@ -20,7 +20,7 @@ These IDs are hard-coded for the Area-51m R2 configuration this repository targe
 ## Daily-driver features
 
 - Native macOS menu-bar app (`LSUIElement`, no Dock icon)
-- Live keyboard brightness slider
+- Live keyboard brightness slider. The keyboard light shares the system keyboard's USB interface, so macOS requires Input Monitoring for that build of the app. Logo brightness does not. Reconnect AlienFX asks for that permission when the keyboard is disconnected for this reason. If macOS does not show a prompt, it opens System Settings to Input Monitoring. After the switch is on, AlienFX connects again without another launch
 - Live chassis/logo brightness slider
 - HID writes throttled to 80 ms while dragging (~12.5 updates/sec)
 - Persistent brightness and preferences
@@ -40,6 +40,7 @@ These IDs are hard-coded for the Area-51m R2 configuration this repository targe
 - Launch at Login via `SMAppService` (macOS 13+)
 - Global keyboard-brightness shortcuts: `Control+Option+F5` / `Control+Option+F6` (−/+ 10%)
 - Copy Diagnostics to clipboard with visual confirmation
+- Language menu: Follow System, or any language shipped as a `.lproj`. The menu updates immediately, without relaunching. Brightness preset names stay in English in preferences so saved values are not tied to the display language. See [Adding a language](#adding-a-language)
 - No continuous background timer
 
 ## RGB safety model
@@ -103,6 +104,24 @@ For **Launch at Login**, move the built app to `/Applications` (or `~/Applicatio
 6. Test display sleep/wake and lock/unlock.
 7. Test the global keyboard shortcuts: `Control+Option+F5` decreases keyboard brightness by 10%, `Control+Option+F6` increases it by 10%.
 8. Finally test a normal computer sleep/wake and copy Diagnostics if either AlienFX device does not reconnect.
+
+## Adding a language
+
+The Language menu lists Follow System, then every `*.lproj` in the app that contains `Localizable.strings`. English text is the lookup key. If a translation is missing, the menu shows the English string.
+
+Choosing English, Simplified Chinese, or another bundled language applies it at once. AlienFX does not need to relaunch. Follow System uses the language macOS chose when the process started, so a change to the macOS language shows up the next time the app is opened.
+
+Preset names saved in preferences stay English: `Daily`, `Focus`, `Night`, `Movie`, `Lights Off`, and `Custom`. Translate the menu title only. Leave preference keys, VID/PID values, API versions, and shortcut names unchanged. Keep every format placeholder (`%@`, `%ld`, `%.1f`, `%%`) in the same order as the English key.
+
+To add a language, using Japanese as the example:
+
+1. Copy `AlienFxTest/en.lproj/Localizable.strings` to `AlienFxTest/ja.lproj/Localizable.strings`.
+2. Translate the values on the right. Leave the keys on the left exactly as they are.
+3. Save the file as UTF-16. The Xcode strings build step expects that encoding.
+4. In the Xcode project, add `ja` to the `Localizable.strings` variant group, add `ja` to the project known regions, and add `ja` to `CFBundleLocalizations` in `AlienFxTest/Info.plist`.
+5. Build and run. The menu shows the language's own name from the system locale, so `ja` appears as 日本語. No other code change is required.
+
+A new `.lproj` appears in the menu after the next launch. Switching among languages that are already in the app takes effect immediately.
 
 ## Credits
 

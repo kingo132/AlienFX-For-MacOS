@@ -14,6 +14,8 @@
 		969CF6A826D8D0DB0077A3D5 /* AlienFX_SDK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 969CF6A626D8D0DB0077A3D5 /* AlienFX_SDK.cpp */; };
 		96C952A426FF6F5800009B16 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96C952A226FF6F5800009B16 /* MainMenu.xib */; };
 		96F7A9FF26E665F500FE1168 /* AlienFX_Bridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96F7A9FD26E665F500FE1168 /* AlienFX_Bridge.mm */; };
+		A1F0C00126FF6F5800000003 /* AFXLocalization.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F0C00126FF6F5800000002 /* AFXLocalization.m */; };
+		A1F0C00126FF6F5800000007 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1F0C00126FF6F5800000006 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,10 @@
 		96C952A326FF6F5800009B16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		96F7A9FD26E665F500FE1168 /* AlienFX_Bridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AlienFX_Bridge.mm; sourceTree = "<group>"; };
 		96F7A9FE26E665F500FE1168 /* AlienFX_Bridge.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AlienFX_Bridge.hpp; sourceTree = "<group>"; };
+		A1F0C00126FF6F5800000001 /* AFXLocalization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFXLocalization.h; sourceTree = "<group>"; };
+		A1F0C00126FF6F5800000002 /* AFXLocalization.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFXLocalization.m; sourceTree = "<group>"; };
+		A1F0C00126FF6F5800000004 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A1F0C00126FF6F5800000005 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +77,9 @@
 				96F7A9FE26E665F500FE1168 /* AlienFX_Bridge.hpp */,
 				7692C58D223F860400F9A6EE /* AppDelegate.h */,
 				7692C58E223F860400F9A6EE /* AppDelegate.m */,
+				A1F0C00126FF6F5800000001 /* AFXLocalization.h */,
+				A1F0C00126FF6F5800000002 /* AFXLocalization.m */,
+				A1F0C00126FF6F5800000006 /* Localizable.strings */,
 				7692C590223F860400F9A6EE /* Assets.xcassets */,
 				96C952A226FF6F5800009B16 /* MainMenu.xib */,
 				7692C595223F860400F9A6EE /* Info.plist */,
@@ -127,6 +136,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 7692C581223F860400F9A6EE;
 			productRefGroup = 7692C58B223F860400F9A6EE /* Products */;
@@ -145,6 +155,7 @@
 			files = (
 				7692C591223F860400F9A6EE /* Assets.xcassets in Resources */,
 				96C952A426FF6F5800009B16 /* MainMenu.xib in Resources */,
+				A1F0C00126FF6F5800000007 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,6 +170,7 @@
 				969CF6A826D8D0DB0077A3D5 /* AlienFX_SDK.cpp in Sources */,
 				7692C597223F860400F9A6EE /* main.m in Sources */,
 				7692C58F223F860400F9A6EE /* AppDelegate.m in Sources */,
+				A1F0C00126FF6F5800000003 /* AFXLocalization.m in Sources */,
 				9600ED6926FC9D9200F6DD14 /* ScreenStateObserver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -166,6 +178,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		A1F0C00126FF6F5800000006 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A1F0C00126FF6F5800000004 /* en */,
+				A1F0C00126FF6F5800000005 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		96C952A226FF6F5800009B16 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (

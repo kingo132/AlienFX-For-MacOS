@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import "AFXLocalization.h"
 #import "ScreenStateObserver.h"
 #include "AlienFX_Bridge.hpp"
 
@@ -172,6 +173,18 @@ static NSString * const kProfileCustom = @"Custom";
 @property (nonatomic, strong) NSMenuItem *launchAtLoginItem;
 @property (nonatomic, strong) NSMenuItem *diagnosticsItem;
 @property (nonatomic, strong) NSMenuItem *touchGuardItem;
+@property (nonatomic, strong) NSMenuItem *brightnessDownItem;
+@property (nonatomic, strong) NSMenuItem *brightnessUpItem;
+@property (nonatomic, strong) NSMenuItem *saveAsItem;
+@property (nonatomic, strong) NSMenu *saveAsMenu;
+@property (nonatomic, strong) NSMenuItem *profilesItem;
+@property (nonatomic, strong) NSMenuItem *touchGuardDelayItem;
+@property (nonatomic, strong) NSMenuItem *saveBatteryItem;
+@property (nonatomic, strong) NSMenuItem *automationItem;
+@property (nonatomic, strong) NSMenuItem *reconnectItem;
+@property (nonatomic, strong) NSMenuItem *quitItem;
+@property (nonatomic, strong) NSMenu *languageMenu;
+@property (nonatomic, strong) NSMenuItem *languageItem;
 @property (nonatomic, strong) NSMenu *touchGuardDelayMenu;
 @property (nonatomic) NSTimeInterval touchGuardInterval;
 // Owned CF objects; created, used and destroyed on the main run loop.
@@ -218,6 +231,12 @@ static NSString * const kProfileCustom = @"Custom";
 - (void)startTouchGuardIfPossible;
 - (void)stopTouchGuard;
 - (NSString *)touchGuardStatusText;
+- (void)applyLocalizedTitles;
+- (void)languageDidChange:(NSNotification *)notification;
+- (void)selectLanguage:(NSMenuItem *)sender;
+- (void)refreshReconnectTitle;
+- (BOOL)keyboardNeedsInputMonitoring;
+- (void)retryReconnectAfterInputMonitoringGrant:(NSUInteger)generation remaining:(NSInteger)remaining;
 
 @end
 
@@ -294,6 +313,10 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
 {
     [self registerDefaults];
     [self loadSavedState];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(languageDidChange:)
+                                               name:AFXLanguageDidChangeNotification
+                                             object:nil];
     self.touchGuardRequested = [NSUserDefaults.standardUserDefaults boolForKey:kTouchGuardEnabledKey];
     NSTimeInterval savedInterval = [NSUserDefaults.standardUserDefaults doubleForKey:kTouchGuardIntervalKey];
     self.touchGuardInterval = [AFXTouchGuardIntervals() containsObject:@(savedInterval)]
@@ -313,6 +336,9 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
 
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
+    [NSNotificationCenter.defaultCenter removeObserver:self
+                                                  name:AFXLanguageDidChangeNotification
+                                                object:nil];
     [self stopTouchGuard];
     [self unregisterGlobalHotKeys];
     self.reconnectGeneration++;
@@ -331,6 +357,7 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
     NSDictionary *defaults = @{
         kTouchGuardEnabledKey: @NO,
         kTouchGuardIntervalKey: @(kTouchGuardDefaultInterval),
+        AFXLanguagePreferenceKey: AFXLanguageSystem,
         kKeyboardBrightnessKey: @35,
         kChassisBrightnessKey: @50,
         kActiveProfileKey: kProfileCustom,
@@ -427,36 +454,36 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
     [self.profilesMenu addItem:NSMenuItem.separatorItem];
 
     NSString *f5Key = [NSString stringWithFormat:@"%C", NSF5FunctionKey];
-    NSMenuItem *brightnessDownItem = [[NSMenuItem alloc] initWithTitle:@"Keyboard Brightness −10%"
-                                                                  action:@selector(decreaseKeyboardBrightness:)
-                                                           keyEquivalent:f5Key];
-    brightnessDownItem.keyEquivalentModifierMask = NSEventModifierFlagControl | NSEventModifierFlagOption;
-    brightnessDownItem.target = self;
-    [self.profilesMenu addItem:brightnessDownItem];
+    self.brightnessDownItem = [[NSMenuItem alloc] initWithTitle:@"Keyboard Brightness −10%"
+                                                          action:@selector(decreaseKeyboardBrightness:)
+                                                   keyEquivalent:f5Key];
+    self.brightnessDownItem.keyEquivalentModifierMask = NSEventModifierFlagControl | NSEventModifierFlagOption;
+    self.brightnessDownItem.target = self;
+    [self.profilesMenu addItem:self.brightnessDownItem];
 
     NSString *f6Key = [NSString stringWithFormat:@"%C", NSF6FunctionKey];
-    NSMenuItem *brightnessUpItem = [[NSMenuItem alloc] initWithTitle:@"Keyboard Brightness +10%"
-                                                                action:@selector(increaseKeyboardBrightness:)
-                                                         keyEquivalent:f6Key];
-    brightnessUpItem.keyEquivalentModifierMask = NSEventModifierFlagControl | NSEventModifierFlagOption;
-    brightnessUpItem.target = self;
-    [self.profilesMenu addItem:brightnessUpItem];
+    self.brightnessUpItem = [[NSMenuItem alloc] initWithTitle:@"Keyboard Brightness +10%"
+                                                        action:@selector(increaseKeyboardBrightness:)
+                                                 keyEquivalent:f6Key];
+    self.brightnessUpItem.keyEquivalentModifierMask = NSEventModifierFlagControl | NSEventModifierFlagOption;
+    self.brightnessUpItem.target = self;
+    [self.profilesMenu addItem:self.brightnessUpItem];
 
     [self.profilesMenu addItem:NSMenuItem.separatorItem];
-    NSMenuItem *saveAsItem = [[NSMenuItem alloc] initWithTitle:@"Save Current As" action:nil keyEquivalent:@""];
-    NSMenu *saveAsMenu = [[NSMenu alloc] initWithTitle:@"Save Current As"];
+    self.saveAsItem = [[NSMenuItem alloc] initWithTitle:@"Save Current As" action:nil keyEquivalent:@""];
+    self.saveAsMenu = [[NSMenu alloc] initWithTitle:@"Save Current As"];
     for (NSString *profile in @[kProfileDaily, kProfileFocus, kProfileNight, kProfileMovie]) {
         NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:profile action:@selector(saveCurrentAsProfile:) keyEquivalent:@""];
         item.target = self;
         item.representedObject = profile;
-        [saveAsMenu addItem:item];
+        [self.saveAsMenu addItem:item];
     }
-    saveAsItem.submenu = saveAsMenu;
-    [self.profilesMenu addItem:saveAsItem];
+    self.saveAsItem.submenu = self.saveAsMenu;
+    [self.profilesMenu addItem:self.saveAsItem];
 
-    NSMenuItem *profilesItem = [[NSMenuItem alloc] initWithTitle:@"Brightness Presets" action:nil keyEquivalent:@""];
-    profilesItem.submenu = self.profilesMenu;
-    [self.statusMenu addItem:profilesItem];
+    self.profilesItem = [[NSMenuItem alloc] initWithTitle:@"Brightness Presets" action:nil keyEquivalent:@""];
+    self.profilesItem.submenu = self.profilesMenu;
+    [self.statusMenu addItem:self.profilesItem];
 
     self.automationMenu = [[NSMenu alloc] initWithTitle:@"Automation"];
 
@@ -477,9 +504,9 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
         item.representedObject = intervals[i];
         [self.touchGuardDelayMenu addItem:item];
     }
-    NSMenuItem *delayItem = [[NSMenuItem alloc] initWithTitle:@"Touch Guard Delay" action:nil keyEquivalent:@""];
-    delayItem.submenu = self.touchGuardDelayMenu;
-    [self.automationMenu addItem:delayItem];
+    self.touchGuardDelayItem = [[NSMenuItem alloc] initWithTitle:@"Touch Guard Delay" action:nil keyEquivalent:@""];
+    self.touchGuardDelayItem.submenu = self.touchGuardDelayMenu;
+    [self.automationMenu addItem:self.touchGuardDelayItem];
     [self.automationMenu addItem:NSMenuItem.separatorItem];
 
     self.offWithDisplayItem = [[NSMenuItem alloc] initWithTitle:@"Turn lights off with display"
@@ -506,11 +533,11 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
     self.batteryProfileDescriptionItem.enabled = NO;
     [self.automationMenu addItem:self.batteryProfileDescriptionItem];
 
-    NSMenuItem *saveBatteryItem = [[NSMenuItem alloc] initWithTitle:@"Save Current as Battery Saver"
-                                                             action:@selector(saveCurrentAsBatteryProfile:)
-                                                      keyEquivalent:@""];
-    saveBatteryItem.target = self;
-    [self.automationMenu addItem:saveBatteryItem];
+    self.saveBatteryItem = [[NSMenuItem alloc] initWithTitle:@"Save Current as Battery Saver"
+                                                      action:@selector(saveCurrentAsBatteryProfile:)
+                                               keyEquivalent:@""];
+    self.saveBatteryItem.target = self;
+    [self.automationMenu addItem:self.saveBatteryItem];
 
     [self.automationMenu addItem:NSMenuItem.separatorItem];
 
@@ -520,18 +547,18 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
     self.launchAtLoginItem.target = self;
     [self.automationMenu addItem:self.launchAtLoginItem];
 
-    NSMenuItem *automationItem = [[NSMenuItem alloc] initWithTitle:@"Automation" action:nil keyEquivalent:@""];
-    automationItem.submenu = self.automationMenu;
-    [self.statusMenu addItem:automationItem];
+    self.automationItem = [[NSMenuItem alloc] initWithTitle:@"Automation" action:nil keyEquivalent:@""];
+    self.automationItem.submenu = self.automationMenu;
+    [self.statusMenu addItem:self.automationItem];
 
     [self.statusMenu addItem:NSMenuItem.separatorItem];
 
-    NSMenuItem *reconnectItem = [[NSMenuItem alloc] initWithTitle:@"Reconnect AlienFX"
-                                                           action:@selector(reconnectAlienFX:)
-                                                    keyEquivalent:@"r"];
-    reconnectItem.keyEquivalentModifierMask = NSEventModifierFlagCommand;
-    reconnectItem.target = self;
-    [self.statusMenu addItem:reconnectItem];
+    self.reconnectItem = [[NSMenuItem alloc] initWithTitle:@"Reconnect AlienFX"
+                                                    action:@selector(reconnectAlienFX:)
+                                             keyEquivalent:@"r"];
+    self.reconnectItem.keyEquivalentModifierMask = NSEventModifierFlagCommand;
+    self.reconnectItem.target = self;
+    [self.statusMenu addItem:self.reconnectItem];
 
     self.diagnosticsItem = [[NSMenuItem alloc] initWithTitle:@"Copy Diagnostics"
                                                        action:@selector(copyDiagnostics:)
@@ -539,16 +566,36 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
     self.diagnosticsItem.target = self;
     [self.statusMenu addItem:self.diagnosticsItem];
 
+    self.languageMenu = [[NSMenu alloc] initWithTitle:@"Language"];
+    NSMenuItem *systemLanguageItem = [[NSMenuItem alloc] initWithTitle:@"Follow System"
+                                                                 action:@selector(selectLanguage:)
+                                                          keyEquivalent:@""];
+    systemLanguageItem.target = self;
+    systemLanguageItem.representedObject = AFXLanguageSystem;
+    [self.languageMenu addItem:systemLanguageItem];
+    for (NSString *code in AFXAvailableLanguageCodes()) {
+        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:code
+                                                      action:@selector(selectLanguage:)
+                                               keyEquivalent:@""];
+        item.target = self;
+        item.representedObject = code;
+        [self.languageMenu addItem:item];
+    }
+    self.languageItem = [[NSMenuItem alloc] initWithTitle:@"Language" action:nil keyEquivalent:@""];
+    self.languageItem.submenu = self.languageMenu;
+    [self.statusMenu addItem:self.languageItem];
+
     [self.statusMenu addItem:NSMenuItem.separatorItem];
 
-    NSMenuItem *quitItem = [[NSMenuItem alloc] initWithTitle:@"Quit AlienFX"
-                                                      action:@selector(quitApp:)
-                                               keyEquivalent:@"q"];
-    quitItem.keyEquivalentModifierMask = NSEventModifierFlagCommand;
-    quitItem.target = self;
-    [self.statusMenu addItem:quitItem];
+    self.quitItem = [[NSMenuItem alloc] initWithTitle:@"Quit AlienFX"
+                                               action:@selector(quitApp:)
+                                        keyEquivalent:@"q"];
+    self.quitItem.keyEquivalentModifierMask = NSEventModifierFlagCommand;
+    self.quitItem.target = self;
+    [self.statusMenu addItem:self.quitItem];
 
     self.statusItem.menu = self.statusMenu;
+    [self applyLocalizedTitles];
 }
 
 - (void)menuWillOpen:(NSMenu *)menu
@@ -817,10 +864,10 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
         if (![defaults boolForKey:kTouchGuardExplainedKey] || needsPermissions) {
             [defaults setBool:YES forKey:kTouchGuardExplainedKey];
             NSAlert *alert = [NSAlert new];
-            alert.messageText = @"Enable Touch Guard";
-            alert.informativeText = [NSString stringWithFormat:@"Allow AlienFX in System Settings → Privacy & Security → Accessibility and Input Monitoring. Touch Guard observes key presses/releases without recording their content, and blocks left/right clicks from both trackpad and mouse for %.1f seconds after each key event. Movement and scrolling remain available. After granting access, reopen the AlienFX menu; if macOS requests it, quit and reopen AlienFX.", self.touchGuardInterval];
-            [alert addButtonWithTitle:needsPermissions ? @"Request Permissions" : @"OK"];
-            if (needsPermissions) [alert addButtonWithTitle:@"Later"];
+            alert.messageText = AFXLocalized(@"Enable Touch Guard");
+            alert.informativeText = AFXLocalizedFormat(@"Allow AlienFX in System Settings → Privacy & Security → Accessibility and Input Monitoring. Touch Guard observes key presses/releases without recording their content, and blocks left/right clicks from both trackpad and mouse for %.1f seconds after each key event. Movement and scrolling remain available. After granting access, reopen the AlienFX menu; if macOS requests it, quit and reopen AlienFX.", self.touchGuardInterval);
+            [alert addButtonWithTitle:needsPermissions ? AFXLocalized(@"Request Permissions") : AFXLocalized(@"OK")];
+            if (needsPermissions) [alert addButtonWithTitle:AFXLocalized(@"Later")];
             [NSApp activateIgnoringOtherApps:YES];
             if ([alert runModal] == NSAlertFirstButtonReturn && needsPermissions) {
                 AXIsProcessTrustedWithOptions((__bridge CFDictionaryRef)@{
@@ -879,10 +926,10 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
     BOOL currentlyEnabled = service.status == SMAppServiceStatusEnabled || service.status == SMAppServiceStatusRequiresApproval;
     if (!currentlyEnabled && ![self isRunningFromApplicationsFolder]) {
         NSAlert *alert = [[NSAlert alloc] init];
-        alert.messageText = @"Move AlienFX to Applications first";
-        alert.informativeText = @"Launch at Login is most reliable when AlienFX.app is installed in /Applications (or ~/Applications). Move the app there, reopen it, then enable this option.";
-        [alert addButtonWithTitle:@"OK"];
-        [alert addButtonWithTitle:@"Open Applications"];
+        alert.messageText = AFXLocalized(@"Move AlienFX to Applications first");
+        alert.informativeText = AFXLocalized(@"Launch at Login is most reliable when AlienFX.app is installed in /Applications (or ~/Applications). Move the app there, reopen it, then enable this option.");
+        [alert addButtonWithTitle:AFXLocalized(@"OK")];
+        [alert addButtonWithTitle:AFXLocalized(@"Open Applications")];
         NSModalResponse response = [alert runModal];
         if (response == NSAlertSecondButtonReturn) {
             [NSWorkspace.sharedWorkspace openURL:[NSURL fileURLWithPath:@"/Applications" isDirectory:YES]];
@@ -895,9 +942,9 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
 
     if (!success && error) {
         NSAlert *alert = [[NSAlert alloc] init];
-        alert.messageText = @"Could not change Launch at Login";
-        alert.informativeText = error.localizedDescription ?: @"Unknown ServiceManagement error.";
-        [alert addButtonWithTitle:@"OK"];
+        alert.messageText = AFXLocalized(@"Could not change Launch at Login");
+        alert.informativeText = error.localizedDescription ?: AFXLocalized(@"Unknown ServiceManagement error.");
+        [alert addButtonWithTitle:AFXLocalized(@"OK")];
         [alert runModal];
     } else if (service.status == SMAppServiceStatusRequiresApproval) {
         [SMAppService openSystemSettingsLoginItems];
@@ -1114,9 +1161,56 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
 
 #pragma mark Reconnect
 
+- (BOOL)keyboardNeedsInputMonitoring
+{
+    AlienFX_Bridge *bridge = AlienFX_Bridge.sharedManager;
+    if ([bridge keyboardConnected]) return NO;
+    return !CGPreflightListenEventAccess() || [bridge keyboardBlockedByInputMonitoring];
+}
+
 - (void)reconnectAlienFX:(id)sender
 {
-    [self scheduleReconnectStartingAtAttempt:0 delay:0.0];
+    // Wake and menu-open retries stay quiet. Only this click asks for the
+    // keyboard interface permission, then connects again once it is allowed.
+    if (![self keyboardNeedsInputMonitoring]) {
+        [self scheduleReconnectStartingAtAttempt:0 delay:0.0];
+        return;
+    }
+
+    // Leave menu tracking before presenting the system prompt.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [NSApp activateIgnoringOtherApps:YES];
+        CGRequestListenEventAccess();
+        [self scheduleReconnectStartingAtAttempt:0 delay:0.0];
+        if (CGPreflightListenEventAccess()) return;
+
+        // A stale approval for an older signature does not prompt again.
+        // Open the pane so the switch can be turned on, then connect when it is.
+        NSURL *url = [NSURL URLWithString:@"x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent"];
+        [NSWorkspace.sharedWorkspace openURL:url];
+        [self retryReconnectAfterInputMonitoringGrant:self.reconnectGeneration remaining:90];
+    });
+}
+
+- (void)retryReconnectAfterInputMonitoringGrant:(NSUInteger)generation remaining:(NSInteger)remaining
+{
+    if (remaining <= 0 || generation != self.reconnectGeneration || self.computerSleeping) return;
+    if (CGPreflightListenEventAccess()) {
+        [self scheduleReconnectStartingAtAttempt:0 delay:0.0];
+        return;
+    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self retryReconnectAfterInputMonitoringGrant:generation remaining:remaining - 1];
+    });
+}
+
+- (void)refreshReconnectTitle
+{
+    if (!self.reconnectItem) return;
+    NSString *key = [self keyboardNeedsInputMonitoring]
+        ? @"Reconnect AlienFX · Input Monitoring required"
+        : @"Reconnect AlienFX";
+    self.reconnectItem.title = AFXLocalized(key);
 }
 
 - (void)scheduleReconnectStartingAtAttempt:(NSInteger)attempt delay:(NSTimeInterval)delay
@@ -1158,6 +1252,78 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
     });
 }
 
+#pragma mark Language
+
+- (void)selectLanguage:(NSMenuItem *)sender
+{
+    if (![sender.representedObject isKindOfClass:NSString.class]) return;
+    AFXSetPreferredLanguageCode(sender.representedObject);
+}
+
+- (void)languageDidChange:(NSNotification *)notification
+{
+    if (!self.statusMenu) return;
+    [self applyLocalizedTitles];
+    [self refreshMenuState];
+}
+
+- (void)applyLocalizedTitles
+{
+    self.statusItem.button.toolTip = AFXLocalized(@"AlienFX for macOS");
+    self.keyboardBrightnessView.titleLabel.stringValue = AFXLocalized(@"Keyboard Brightness");
+    self.chassisBrightnessView.titleLabel.stringValue = AFXLocalized(@"Chassis / Logo Brightness");
+
+    self.profilesMenu.title = AFXLocalized(@"Presets");
+    self.profilesItem.title = AFXLocalized(@"Brightness Presets");
+    for (NSMenuItem *item in self.profilesMenu.itemArray) {
+        if ([item.representedObject isKindOfClass:NSString.class]) {
+            item.title = AFXLocalized(item.representedObject);
+        }
+    }
+    self.brightnessDownItem.title = AFXLocalized(@"Keyboard Brightness −10%");
+    self.brightnessUpItem.title = AFXLocalized(@"Keyboard Brightness +10%");
+    self.saveAsMenu.title = AFXLocalized(@"Save Current As");
+    self.saveAsItem.title = AFXLocalized(@"Save Current As");
+    for (NSMenuItem *item in self.saveAsMenu.itemArray) {
+        if ([item.representedObject isKindOfClass:NSString.class]) {
+            item.title = AFXLocalized(item.representedObject);
+        }
+    }
+
+    self.automationMenu.title = AFXLocalized(@"Automation");
+    self.automationItem.title = AFXLocalized(@"Automation");
+    self.touchGuardDelayMenu.title = AFXLocalized(@"Touch Guard Delay");
+    self.touchGuardDelayItem.title = AFXLocalized(@"Touch Guard Delay");
+    NSDictionary<NSString *, NSString *> *delayKeys = @{
+        @"0.3": @"0.3 s · Quick",
+        @"0.5": @"0.5 s · Recommended starting point",
+        @"0.8": @"0.8 s · Longer protection",
+        @"1.0": @"1.0 s · Maximum protection (default)",
+    };
+    for (NSMenuItem *item in self.touchGuardDelayMenu.itemArray) {
+        NSString *bucket = [NSString stringWithFormat:@"%.1f", [item.representedObject doubleValue]];
+        NSString *key = delayKeys[bucket];
+        if (key) item.title = AFXLocalized(key);
+    }
+    self.offWithDisplayItem.title = AFXLocalized(@"Turn lights off with display");
+    self.offWhileLockedItem.title = AFXLocalized(@"Turn lights off while locked");
+    self.batteryProfileItem.title = AFXLocalized(@"Use Battery Saver");
+    self.saveBatteryItem.title = AFXLocalized(@"Save Current as Battery Saver");
+    self.reconnectItem.title = AFXLocalized(@"Reconnect AlienFX");
+    self.diagnosticsItem.title = AFXLocalized(@"Copy Diagnostics");
+    self.quitItem.title = AFXLocalized(@"Quit AlienFX");
+
+    self.languageMenu.title = AFXLocalized(@"Language");
+    self.languageItem.title = AFXLocalized(@"Language");
+    NSString *selected = AFXPreferredLanguageCode();
+    for (NSMenuItem *item in self.languageMenu.itemArray) {
+        NSString *code = item.representedObject;
+        item.title = [code isEqualToString:AFXLanguageSystem] ? AFXLocalized(@"Follow System")
+                                                              : AFXLanguageDisplayName(code);
+        item.state = [code isEqualToString:selected] ? NSControlStateValueOn : NSControlStateValueOff;
+    }
+}
+
 #pragma mark Menu refresh
 
 - (void)refreshSliderValues
@@ -1172,6 +1338,7 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
     [self updateHeader];
     [self refreshProfileMenu];
     [self refreshAutomationMenu];
+    [self refreshReconnectTitle];
 }
 
 - (void)refreshProfileMenu
@@ -1191,8 +1358,8 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
     }
     NSString *touchGuardStatus = [self touchGuardStatusText];
     self.touchGuardItem.title = self.touchGuardRequested && ![touchGuardStatus isEqualToString:@"Active"]
-        ? [NSString stringWithFormat:@"Touch Guard · %.1f s (%@)", self.touchGuardInterval, touchGuardStatus]
-        : [NSString stringWithFormat:@"Touch Guard · %.1f s", self.touchGuardInterval];
+        ? AFXLocalizedFormat(@"Touch Guard · %.1f s (%@)", self.touchGuardInterval, AFXLocalized(touchGuardStatus))
+        : AFXLocalizedFormat(@"Touch Guard · %.1f s", self.touchGuardInterval);
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     self.offWithDisplayItem.state = [defaults boolForKey:kOffWithDisplayKey] ? NSControlStateValueOn : NSControlStateValueOff;
     self.offWhileLockedItem.state = [defaults boolForKey:kOffWhileLockedKey] ? NSControlStateValueOn : NSControlStateValueOff;
@@ -1200,18 +1367,18 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
 
     NSInteger batteryKeyboard = [defaults integerForKey:kBatteryKeyboardBrightnessKey];
     NSInteger batteryChassis = [defaults integerForKey:kBatteryChassisBrightnessKey];
-    self.batteryProfileDescriptionItem.title = [NSString stringWithFormat:@"Battery Saver: keyboard %ld%% • chassis %ld%%",
-                                                 (long)batteryKeyboard, (long)batteryChassis];
+    self.batteryProfileDescriptionItem.title = AFXLocalizedFormat(@"Battery Saver: keyboard %ld%% • chassis %ld%%",
+                                                                  (long)batteryKeyboard, (long)batteryChassis);
 
     SMAppServiceStatus status = SMAppService.mainAppService.status;
     self.launchAtLoginItem.state = (status == SMAppServiceStatusEnabled || status == SMAppServiceStatusRequiresApproval)
         ? NSControlStateValueOn : NSControlStateValueOff;
     if (status == SMAppServiceStatusRequiresApproval) {
-        self.launchAtLoginItem.title = @"Launch at Login (approval needed)";
+        self.launchAtLoginItem.title = AFXLocalized(@"Launch at Login (approval needed)");
     } else if (![self isRunningFromApplicationsFolder] && status != SMAppServiceStatusEnabled) {
-        self.launchAtLoginItem.title = @"Launch at Login (move app to Applications)";
+        self.launchAtLoginItem.title = AFXLocalized(@"Launch at Login (move app to Applications)");
     } else {
-        self.launchAtLoginItem.title = @"Launch at Login";
+        self.launchAtLoginItem.title = AFXLocalized(@"Launch at Login");
     }
 }
 
@@ -1219,25 +1386,30 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
 {
     AlienFX_Bridge *bridge = AlienFX_Bridge.sharedManager;
     self.headerView.titleLabel.stringValue = @"AlienFX · Area-51m R2";
-    self.headerView.keyboardLabel.stringValue = [NSString stringWithFormat:@"Keyboard: %@ · API v5",
-                                                  [bridge keyboardConnected] ? @"Connected" : @"Disconnected"];
-    self.headerView.chassisLabel.stringValue = [NSString stringWithFormat:@"Chassis: %@ · API v4",
-                                                 [bridge chassisConnected] ? @"Connected" : @"Disconnected"];
-    self.headerView.colorsLabel.stringValue = @"Colors: Windows/AWCC · preserved";
+    if ([self keyboardNeedsInputMonitoring]) {
+        self.headerView.keyboardLabel.stringValue = AFXLocalizedFormat(@"Keyboard: %@ · Input Monitoring required",
+                                                                        AFXLocalized(@"Disconnected"));
+    } else {
+        self.headerView.keyboardLabel.stringValue = AFXLocalizedFormat(@"Keyboard: %@ · API v5",
+                                                                        AFXLocalized([bridge keyboardConnected] ? @"Connected" : @"Disconnected"));
+    }
+    self.headerView.chassisLabel.stringValue = AFXLocalizedFormat(@"Chassis: %@ · API v4",
+                                                                   AFXLocalized([bridge chassisConnected] ? @"Connected" : @"Disconnected"));
+    self.headerView.colorsLabel.stringValue = AFXLocalized(@"Colors: Windows/AWCC · preserved");
 
     NSMutableArray<NSString *> *parts = [NSMutableArray array];
-    [parts addObject:[NSString stringWithFormat:@"%@", self.activeProfile ?: kProfileCustom]];
+    [parts addObject:AFXLocalized(self.activeProfile ?: kProfileCustom)];
     if ([self shouldForceLightsOff]) {
-        [parts addObject:[NSString stringWithFormat:@"lights off · sleep indicator %ld%%",
-                          (long)kSleepPowerIndicatorBrightness]];
+        [parts addObject:AFXLocalizedFormat(@"lights off · sleep indicator %ld%%",
+                                            (long)kSleepPowerIndicatorBrightness)];
     } else if (self.onBattery && [NSUserDefaults.standardUserDefaults boolForKey:kBatteryProfileEnabledKey]) {
-        [parts addObject:[NSString stringWithFormat:@"battery %ld%% / %ld%%",
-                          (long)self.effectiveKeyboardBrightness, (long)self.effectiveChassisBrightness]];
+        [parts addObject:AFXLocalizedFormat(@"battery %ld%% / %ld%%",
+                                            (long)self.effectiveKeyboardBrightness, (long)self.effectiveChassisBrightness)];
     } else {
-        [parts addObject:[NSString stringWithFormat:@"effective %ld%% / %ld%%",
-                          (long)self.effectiveKeyboardBrightness, (long)self.effectiveChassisBrightness]];
+        [parts addObject:AFXLocalizedFormat(@"effective %ld%% / %ld%%",
+                                            (long)self.effectiveKeyboardBrightness, (long)self.effectiveChassisBrightness)];
     }
-    self.headerView.modeLabel.stringValue = [NSString stringWithFormat:@"Profile: %@", [parts componentsJoinedByString:@" · "]];
+    self.headerView.modeLabel.stringValue = AFXLocalizedFormat(@"Profile: %@", [parts componentsJoinedByString:@" · "]);
 }
 
 #pragma mark Diagnostics / quit
@@ -1248,10 +1420,10 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     NSString *loginText = [self launchAtLoginStatusText];
     NSString *version = [NSString stringWithFormat:@"%@ (%@)",
-                         [NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: @"unknown",
-                         [NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleVersion"] ?: @"unknown"];
+                         [NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: AFXLocalized(@"unknown"),
+                         [NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleVersion"] ?: AFXLocalized(@"unknown")];
 
-    NSString *diagnostics = [NSString stringWithFormat:
+    NSString *diagnostics = AFXLocalizedFormat(
         @"AlienFX for macOS Diagnostics\n"
          "Version: %@\n\n"
          "Keyboard: %@ (VID 0x0D62, PID 0x1A1C, API v5, init=%d)\n"
@@ -1281,41 +1453,41 @@ static CGEventRef AFXTouchGuardEventCallback(CGEventTapProxy proxy, CGEventType 
          "Global keyboard shortcuts: %@ · Ctrl+Option+F5 / Ctrl+Option+F6 (−/+ %ld%%)\n"
          "Reconnect attempt: %ld\n",
         version,
-        [bridge keyboardConnected] ? @"Connected" : @"Disconnected", [bridge keyboardInitStatus],
-        [bridge chassisConnected] ? @"Connected" : @"Disconnected", [bridge chassisInitStatus],
+        AFXLocalized([bridge keyboardConnected] ? @"Connected" : @"Disconnected"), [bridge keyboardInitStatus],
+        AFXLocalized([bridge chassisConnected] ? @"Connected" : @"Disconnected"), [bridge chassisInitStatus],
         (long)self.desiredKeyboardBrightness,
         (long)self.desiredChassisBrightness,
         (long)self.effectiveKeyboardBrightness,
         (long)self.effectiveChassisBrightness,
         kHIDWriteInterval * 1000.0,
-        self.activeProfile ?: kProfileCustom,
+        AFXLocalized(self.activeProfile ?: kProfileCustom),
         (long)kSleepPowerIndicatorBrightness,
-        self.displaySleeping ? @"yes" : @"no",
-        self.sessionLocked ? @"yes" : @"no",
-        self.computerSleeping ? @"yes" : @"no",
-        self.onBattery ? @"Battery" : @"AC",
-        [defaults boolForKey:kBatteryProfileEnabledKey] ? @"enabled" : @"disabled",
+        AFXLocalized(self.displaySleeping ? @"yes" : @"no"),
+        AFXLocalized(self.sessionLocked ? @"yes" : @"no"),
+        AFXLocalized(self.computerSleeping ? @"yes" : @"no"),
+        AFXLocalized(self.onBattery ? @"Battery" : @"AC"),
+        AFXLocalized([defaults boolForKey:kBatteryProfileEnabledKey] ? @"enabled" : @"disabled"),
         (long)[defaults integerForKey:kBatteryKeyboardBrightnessKey],
         (long)[defaults integerForKey:kBatteryChassisBrightnessKey],
-        [defaults boolForKey:kOffWithDisplayKey] ? @"enabled" : @"disabled",
-        [defaults boolForKey:kOffWhileLockedKey] ? @"enabled" : @"disabled",
-        loginText,
-        [self touchGuardStatusText], self.touchGuardInterval,
-        self.touchGuardRequested ? @"on" : @"off",
-        AXIsProcessTrusted() ? @"granted" : @"not granted",
-        CGPreflightListenEventAccess() ? @"granted" : @"not granted",
+        AFXLocalized([defaults boolForKey:kOffWithDisplayKey] ? @"enabled" : @"disabled"),
+        AFXLocalized([defaults boolForKey:kOffWhileLockedKey] ? @"enabled" : @"disabled"),
+        AFXLocalized(loginText),
+        AFXLocalized([self touchGuardStatusText]), self.touchGuardInterval,
+        AFXLocalized(self.touchGuardRequested ? @"on" : @"off"),
+        AFXLocalized(AXIsProcessTrusted() ? @"granted" : @"not granted"),
+        AFXLocalized(CGPreflightListenEventAccess() ? @"granted" : @"not granted"),
         (unsigned long)self.touchGuardRecoveryCount,
-        (self.brightnessDownHotKey && self.brightnessUpHotKey) ? @"registered" : @"unavailable",
+        AFXLocalized((self.brightnessDownHotKey && self.brightnessUpHotKey) ? @"registered" : @"unavailable"),
         (long)kBrightnessStep,
-        (long)self.reconnectAttempt];
+        (long)self.reconnectAttempt);
 
     NSPasteboard *pasteboard = NSPasteboard.generalPasteboard;
     [pasteboard clearContents];
     [pasteboard setString:diagnostics forType:NSPasteboardTypeString];
 
-    self.diagnosticsItem.title = @"Diagnostics Copied ✓";
+    self.diagnosticsItem.title = AFXLocalized(@"Diagnostics Copied ✓");
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        self.diagnosticsItem.title = @"Copy Diagnostics";
+        self.diagnosticsItem.title = AFXLocalized(@"Copy Diagnostics");
     });
 }
 
