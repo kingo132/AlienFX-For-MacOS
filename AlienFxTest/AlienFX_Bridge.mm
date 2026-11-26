@@ -45,6 +45,11 @@ static int chassisInitResult = -999;
     return keyboardFn.IsConnected();
 }
 
+- (BOOL)keyboardBlockedByInputMonitoring
+{
+    return !keyboardFn.IsConnected() && keyboardFn.lastOpenError == kIOReturnNotPermitted;
+}
+
 - (BOOL)chassisConnected
 {
     return chassisFn.IsConnected();

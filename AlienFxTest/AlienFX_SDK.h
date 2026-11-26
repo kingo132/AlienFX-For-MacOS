@@ -171,6 +171,9 @@ namespace AlienFX_SDK
 	public:
 
 		bool inSet = false;
+		// Set when IOHIDManagerOpen fails. kIOReturnNotPermitted means macOS hid
+		// the keyboard interface until Input Monitoring is allowed.
+		IOReturn lastOpenError = kIOReturnSuccess;
 		// Initialize device
 		// Returns PID of device used. if pid argument is -1, first device found into the system will be used.
 		int AlienFXInitialize(int vID, int pID, int rpLen);

@@ -1,4 +1,5 @@
 #include "AlienFX_SDK.h"
+#include <cstdio>
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -122,9 +123,11 @@ namespace AlienFX_SDK
         vid = vID;
         pid = pID;
         length = rpLen;
+        lastOpenError = kIOReturnSuccess;
 
         managerRef = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
         if (!managerRef) {
+            lastOpenError = kIOReturnNoMemory;
             return -1;
         }
 
@@ -148,6 +151,8 @@ namespace AlienFX_SDK
         if (productID) CFRelease(productID);
 
         if (ret != kIOReturnSuccess) {
+            lastOpenError = ret;
+            std::fprintf(stderr, "AlienFX HID open %04x:%04x failed: 0x%x\n", vID, pID, ret);
             AlienFXClose();
             return -1;
         }

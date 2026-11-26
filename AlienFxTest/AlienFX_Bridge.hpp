@@ -23,6 +23,8 @@
 
 - (BOOL)keyboardConnected;
 - (BOOL)chassisConnected;
+/// YES when the keyboard HID open was rejected until Input Monitoring is allowed.
+- (BOOL)keyboardBlockedByInputMonitoring;
 - (int)keyboardInitStatus;
 - (int)chassisInitStatus;
 
